@@ -1,12 +1,15 @@
+// ================================================================
+// 1. MAPA BASE — con relieve Esri inyectado en el estilo
+// ================================================================
+
 async function initMap() {
 
-    // 1a. Descargar el estilo base de Carto
     const styleResp = await fetch(
         'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
     );
     const style = await styleResp.json();
 
-    // 1b. Inyectar la fuente de relieve Esri
+    // Inyectar relieve Esri
     style.sources['esri-relief'] = {
         type: 'raster',
         tiles: [
@@ -16,8 +19,6 @@ async function initMap() {
         attribution: '&copy; Esri'
     };
 
-    // 1c. Encontrar la primera capa de etiquetas (tipo symbol)
-    //     para insertar el relieve justo debajo de ellas
     const firstLabelIdx = style.layers.findIndex(
         l => l.type === 'symbol' && l.layout?.['text-field']
     );
@@ -38,7 +39,7 @@ async function initMap() {
         style.layers.push(relieveLayer);
     }
 
-    // 1d. Traducir etiquetas al español directamente en el estilo
+    // Etiquetas en español
     style.layers.forEach(layer => {
         if (layer.type === 'symbol' && layer.layout?.['text-field']) {
             layer.layout['text-field'] = [
@@ -50,19 +51,17 @@ async function initMap() {
         }
     });
 
-    // 1e. Crear el mapa con el estilo ya modificado
     const map = new maplibregl.Map({
         container: 'map',
         style: style,
-        center: [10, 25],
-        zoom: 2.2,
+        center: [1, 30],
+        zoom: 2,
         pitch: 0,
         bearing: 0,
         attributionControl: false,
         interactive: false
     });
 
-    // Cuando el mapa esté listo, añadir las capas de datos
     map.on('load', () => onMapReady(map));
 }
 
@@ -70,11 +69,12 @@ async function initMap() {
 // ================================================================
 // 2. CONFIGURACIÓN DE CADA SLIDE
 // ================================================================
+
 const chapters = {
 
-    // ── INTRO Y CONTEXTO (sin flechas) ──
+    // ── INTRO Y CONTEXTO ──
     'intro': {
-        center: [10, 25], zoom: 2.2,
+        center: [1, 30], zoom: 2,
         layers: { heatmap: true, rutas: false },
         filtroNuevo: null
     },
@@ -84,12 +84,14 @@ const chapters = {
         filtroNuevo: null
     },
     'global-contexto': {
-        center: [10, 25], zoom: 2.2,
+        center: [1, 30], zoom: 2,
         layers: { heatmap: true, rutas: false },
         filtroNuevo: null
     },
 
     // ── AMÉRICA ──
+
+    // Venezuela → Darién: ruta corta, se completa entera aquí
     'america-venezuela': {
         center: [-73, 7], zoom: 5,
         layers: { heatmap: true, rutas: true },
@@ -98,7 +100,8 @@ const chapters = {
             ruta_es: ["Darién"]
         }
     },
-    // Ecuador: solo el primer tercio de la ruta
+
+    // Ecuador inicia su viaje al norte — solo hasta ~25%
     'america-ecuador': {
         center: [-77, 4], zoom: 5,
         layers: { heatmap: true, rutas: true },
@@ -108,6 +111,9 @@ const chapters = {
             ratioFinal: 0.25
         }
     },
+
+    // Centroamérica: sus flechas empiezan (hasta ~55%).
+    // Ecuador sigue avanzando hasta ~55%.
     'america-centro': {
         center: [-88, 14], zoom: 5,
         layers: { heatmap: true, rutas: true },
@@ -116,34 +122,41 @@ const chapters = {
             ruta_es: ["Frontera EEUU-México"],
             ratioFinal: 0.55
         },
-        continuar: [{
-            country_clean: ["Ecuador"],
-            ruta_es: ["Frontera EEUU-México"],
-            ratioFinal: 0.55
-        }]
+        continuar: [
+            {
+                country_clean: ["Ecuador"],
+                ruta_es: ["Frontera EEUU-México"],
+                ratioFinal: 0.70
+            }
+        ]
     },
+
+    // México + todo llega al 100%
     'america-norte': {
         center: [-102, 25], zoom: 4.5,
         layers: { heatmap: true, rutas: true },
         filtroNuevo: {
             country_clean: ["Mexico"],
             ruta_es: ["Frontera EEUU-México"]
+            // sin ratioFinal → 1.0 por defecto
         },
-        continuar: [{
-            country_clean: ["Ecuador"],
-            ruta_es: ["Frontera EEUU-México"],
-            ratioFinal: 1.0
-        },
-        {
-            country_clean: ["El Salvador", "Guatemala", "Honduras"],
-            ruta_es: ["Frontera EEUU-México"],
-            ratioFinal: 1.0
-        }]
+        continuar: [
+            {
+                country_clean: ["Ecuador"],
+                ruta_es: ["Frontera EEUU-México"],
+                ratioFinal: 1.0
+            },
+            {
+                country_clean: ["El Salvador", "Guatemala", "Honduras"],
+                ruta_es: ["Frontera EEUU-México"],
+                ratioFinal: 1.0
+            }
+        ]
     },
 
     // ── CUERNO DE ÁFRICA ──
     'africa-cuerno': {
-        center: [42, 8], zoom: 4.5,
+        center: [42, 8], zoom: 3.2,
         layers: { heatmap: true, rutas: true },
         filtroNuevo: {
             country_clean: ["Ethiopia"],
@@ -212,7 +225,7 @@ const chapters = {
 
     // ── VISTA GLOBAL FINAL ──
     'global-final': {
-        center: [20, 20], zoom: 2.2,
+        center: [1, 30], zoom: 2,
         layers: { heatmap: true, rutas: true },
         filtroNuevo: null
     }
@@ -220,7 +233,7 @@ const chapters = {
 
 
 // ================================================================
-// 3. CUANDO EL MAPA ESTÁ LISTO — capas de datos
+// 3. CUANDO EL MAPA ESTÁ LISTO
 // ================================================================
 async function onMapReady(map) {
 
@@ -247,6 +260,21 @@ async function onMapReady(map) {
     const rutasResponse = await fetch('datos/RUTAS-SUAVIZADAS.geojson');
     const rutasOriginal = await rutasResponse.json();
     window.rutasOriginal = rutasOriginal;
+
+    // Precalcular longitudes
+    window.rutasLongitudes = new Map();
+    rutasOriginal.features.forEach(feature => {
+        if (feature.geometry.type !== 'LineString' &&
+            feature.geometry.type !== 'MultiLineString') return;
+        try {
+            const linea = feature.geometry.type === 'MultiLineString'
+                ? turf.lineString(feature.geometry.coordinates.flat())
+                : feature;
+            const l = turf.length(linea, { units: 'kilometers' });
+            const key = claveRuta(feature);
+            window.rutasLongitudes.set(key, l);
+        } catch (e) {}
+    });
 
     map.addSource('rutas', {
         type: 'geojson',
@@ -303,10 +331,7 @@ async function onMapReady(map) {
         }
     });
 
-    // ── Lanzar contador con retardo ──
-    setTimeout(() => startCounterAnimation(map), 3000);
-
-    // ── Iniciar scrollytelling ──
+    setTimeout(() => startCounterAnimation(map), 1000);
     initScrollytelling(map);
 }
 
@@ -372,51 +397,53 @@ function startCounterAnimation(map) {
 
 
 // ================================================================
-// 6. ANIMACIÓN DE RUTAS (sistema acumulativo)
+// 6. SISTEMA DE ANIMACIÓN PROGRESIVA
 // ================================================================
-window.filtrosCompletados = [];
-window.filtroActivo = null;
-let progresoMaximo = 0;
-let progresoBase = 0;
 
-function coincideFiltro(feature, filtro) {
-    if (!filtro) return false;
+// Genera una clave única para cada feature
+function claveRuta(feature) {
+    return (feature.properties.country_clean || '') + '|' +
+           (feature.properties.ruta_es || '');
+}
+
+// Registro global: clave → ratio acumulado (0..1)
+// Nunca retrocede
+const rutaRatios = {};
+
+// Lista de animaciones activas en el slide actual.
+// Cada entrada: { country_clean, ruta_es, ratioDesde, ratioFinal }
+let animacionesActivas = [];
+
+// Progreso del scroll dentro del slide actual (0..1)
+let scrollProgreso = 0;
+
+function coincideAnimacion(feature, anim) {
     const country = feature.properties.country_clean || '';
     const ruta = feature.properties.ruta_es || '';
-    const fc = filtro.country_clean || [];
-    const fr = filtro.ruta_es || [];
+    const fc = anim.country_clean || [];
+    const fr = anim.ruta_es || [];
     const okC = fc.length === 0 || fc.includes(country);
     const okR = fr.length === 0 || fr.includes(ruta);
     return okC && okR;
 }
 
-function actualizarRutas(map, progreso) {
-    if (!window.rutasOriginal) return;
-
-    progresoMaximo = Math.max(progresoMaximo, progreso);
-
-    const completados = window.filtrosCompletados;
-    const nuevo = window.filtroActivo;
-
-    if (completados.length === 0 && !nuevo) return;
-
-    // Precalcular la longitud máxima de las flechas nuevas
-    let longMaxima = 0;
-    if (nuevo) {
-        window.rutasOriginal.features.forEach(feature => {
-            if (feature.geometry.type !== 'LineString' &&
-                feature.geometry.type !== 'MultiLineString') return;
-            if (!coincideFiltro(feature, nuevo)) return;
-
-            try {
-                const linea = feature.geometry.type === 'MultiLineString'
-                    ? turf.lineString(feature.geometry.coordinates.flat())
-                    : feature;
-                const l = turf.length(linea, { units: 'kilometers' });
-                if (l > longMaxima) longMaxima = l;
-            } catch (e) {}
-        });
+function getRatioActual(feature) {
+    // Buscar si esta feature tiene una animación activa
+    for (const anim of animacionesActivas) {
+        if (coincideAnimacion(feature, anim)) {
+            // Interpolar entre ratioDesde y ratioFinal según scroll
+            const desde = anim.ratioDesde;
+            const hasta = anim.ratioFinal;
+            return desde + (hasta - desde) * scrollProgreso;
+        }
     }
+    // Si no tiene animación activa, devolver el ratio congelado
+    const key = claveRuta(feature);
+    return rutaRatios[key] || 0;
+}
+
+function dibujarRutas(map) {
+    if (!window.rutasOriginal) return;
 
     const recortadas = [];
     const puntas = [];
@@ -425,34 +452,19 @@ function actualizarRutas(map, progreso) {
         if (feature.geometry.type !== 'LineString' &&
             feature.geometry.type !== 'MultiLineString') return;
 
-        let esCompletada = false;
-        for (const filtro of completados) {
-            if (coincideFiltro(feature, filtro)) {
-                esCompletada = true;
-                break;
-            }
-        }
-
-        const esNueva = coincideFiltro(feature, nuevo);
-
-        if (!esCompletada && !esNueva) return;
+        const ratio = getRatioActual(feature);
+        if (ratio <= 0) return;
 
         try {
             const linea = feature.geometry.type === 'MultiLineString'
                 ? turf.lineString(feature.geometry.coordinates.flat())
                 : feature;
 
-            const longTotal = turf.length(linea, { units: 'kilometers' });
+            const key = claveRuta(feature);
+            const longTotal = window.rutasLongitudes.get(key);
+            if (!longTotal) return;
 
-            let ratio;
-            if (esCompletada) {
-                ratio = 1;
-            } else {
-                const kmRecorridos = progresoMaximo * longMaxima;
-                ratio = Math.min(kmRecorridos / longTotal, 1);
-            }
-
-            const longParcial = longTotal * ratio;
+            const longParcial = longTotal * Math.min(ratio, 1);
             if (longParcial <= 0) return;
 
             const trozo = turf.lineSliceAlong(linea, 0, longParcial, {
@@ -462,6 +474,7 @@ function actualizarRutas(map, progreso) {
             trozo.properties = { ...feature.properties };
             recortadas.push(trozo);
 
+            // Punta de flecha
             const coords = trozo.geometry.coordinates;
             if (coords.length >= 2) {
                 const penultimo = coords[coords.length - 2];
@@ -481,53 +494,6 @@ function actualizarRutas(map, progreso) {
     map.getSource('rutas').setData({
         type: 'FeatureCollection', features: recortadas
     });
-    // ── Rutas parciales (continuaciones entre slides) ──
-    if (window.filtrosParciales) {
-        window.filtrosParciales.forEach(parcial => {
-            window.rutasOriginal.features.forEach(feature => {
-                if (feature.geometry.type !== 'LineString' &&
-                    feature.geometry.type !== 'MultiLineString') return;
-                if (!coincideFiltro(feature, parcial)) return;
-                
-                // Evitar duplicados con completadas o nuevas
-                if (recortadas.some(r =>
-                    r.properties.country_clean === feature.properties.country_clean &&
-                    r.properties.ruta_es === feature.properties.ruta_es)) return;
-                
-                try {
-                    const linea = feature.geometry.type === 'MultiLineString'
-                        ? turf.lineString(feature.geometry.coordinates.flat())
-                        : feature;
-                    const longTotal = turf.length(linea, { units: 'kilometers' });
-                
-                    // Dibujar hasta el ratio que se haya alcanzado o animando hacia ratioFinal
-                    const ratioDesde = parcial.ratioAlcanzado || 0;
-                    const ratioHasta = parcial.ratioFinal || 1;
-                    const ratioActual = ratioDesde + (ratioHasta - ratioDesde) * progresoMaximo;
-                    const longParcial = longTotal * ratioActual;
-                    if (longParcial <= 0) return;
-                
-                    const trozo = turf.lineSliceAlong(linea, 0, longParcial, {
-                        units: 'kilometers'
-                    });
-                    trozo.properties = { ...feature.properties };
-                    recortadas.push(trozo);
-                
-                    const coords = trozo.geometry.coordinates;
-                    if (coords.length >= 2) {
-                        const penultimo = coords[coords.length - 2];
-                        const ultimo = coords[coords.length - 1];
-                        const bearing = turf.bearing(
-                            turf.point(penultimo), turf.point(ultimo)
-                        );
-                        puntas.push(turf.point(ultimo, {
-                            bearing, fallecidos: feature.properties.fallecidos || 0
-                        }));
-                    }
-                } catch (e) {}
-            });
-        });
-    }
     map.getSource('rutas-puntas').setData({
         type: 'FeatureCollection', features: puntas
     });
@@ -540,6 +506,79 @@ function limpiarRutas(map) {
     map.getSource('rutas-puntas').setData({
         type: 'FeatureCollection', features: []
     });
+}
+
+// Congelar el progreso actual de todas las animaciones activas
+function congelarAnimaciones() {
+    for (const anim of animacionesActivas) {
+        const ratioAlcanzado = anim.ratioDesde +
+            (anim.ratioFinal - anim.ratioDesde) * scrollProgreso;
+
+        // Aplicar a todas las features que coincidan
+        window.rutasOriginal.features.forEach(feature => {
+            if (!coincideAnimacion(feature, anim)) return;
+            const key = claveRuta(feature);
+            const anterior = rutaRatios[key] || 0;
+            // Nunca retrocede
+            rutaRatios[key] = Math.max(anterior, ratioAlcanzado);
+        });
+    }
+}
+
+// Construir la lista de animaciones para un chapter
+function construirAnimaciones(chapter) {
+    const lista = [];
+
+    // Flechas nuevas
+    if (chapter.filtroNuevo) {
+        const fn = chapter.filtroNuevo;
+        const ratioFinal = fn.ratioFinal != null ? fn.ratioFinal : 1.0;
+
+        // Para cada combinación country×ruta, el ratioDesde es
+        // lo que ya se haya acumulado previamente (normalmente 0)
+        // Usamos un representante para obtener el ratioDesde
+        let ratioDesde = 0;
+        if (fn.country_clean && fn.ruta_es) {
+            window.rutasOriginal.features.forEach(feature => {
+                if (coincideAnimacion(feature, fn)) {
+                    const key = claveRuta(feature);
+                    ratioDesde = Math.max(ratioDesde, rutaRatios[key] || 0);
+                }
+            });
+        }
+
+        lista.push({
+            country_clean: fn.country_clean,
+            ruta_es: fn.ruta_es,
+            ratioDesde: ratioDesde,
+            ratioFinal: ratioFinal
+        });
+    }
+
+    // Continuaciones
+    if (chapter.continuar) {
+        chapter.continuar.forEach(cont => {
+            const ratioFinal = cont.ratioFinal != null ? cont.ratioFinal : 1.0;
+
+            // ratioDesde = lo máximo acumulado hasta ahora
+            let ratioDesde = 0;
+            window.rutasOriginal.features.forEach(feature => {
+                if (coincideAnimacion(feature, cont)) {
+                    const key = claveRuta(feature);
+                    ratioDesde = Math.max(ratioDesde, rutaRatios[key] || 0);
+                }
+            });
+
+            lista.push({
+                country_clean: cont.country_clean,
+                ruta_es: cont.ruta_es,
+                ratioDesde: ratioDesde,
+                ratioFinal: ratioFinal
+            });
+        });
+    }
+
+    return lista;
 }
 
 
@@ -556,6 +595,10 @@ function initScrollytelling(map) {
             if (entry.isIntersecting) {
                 const stepId = entry.target.dataset.step;
                 if (stepId === activeStep) return;
+
+                // ── Congelar animaciones del slide anterior ──
+                congelarAnimaciones();
+
                 activeStep = stepId;
 
                 const chapter = chapters[stepId];
@@ -581,63 +624,16 @@ function initScrollytelling(map) {
                         chapter.layers.rutas ? 'visible' : 'none');
                 }
 
-                // ── Sistema acumulativo ──
-                // ── Sistema acumulativo ──
-                // Completar el filtro anterior solo si no tenía ratioFinal < 1
-                if (window.filtroActivo) {
-                    const rf = window.filtroActivo.ratioFinal;
-                    if (!rf || rf >= 1) {
-                        window.filtrosCompletados.push(window.filtroActivo);
-                    } else {
-                        // Guardarlo como parcial: se recuerda su ratio alcanzado
-                        if (!window.filtrosParciales) window.filtrosParciales = [];
-                        window.filtrosParciales.push({
-                            ...window.filtroActivo,
-                            ratioAlcanzado: rf
-                        });
-                    }
-                }
+                // ── Construir nuevas animaciones ──
+                scrollProgreso = 0;
+                animacionesActivas = construirAnimaciones(chapter);
 
-                // Procesar continuaciones: avanzar rutas parciales
-                if (chapter.continuar) {
-                    chapter.continuar.forEach(cont => {
-                        if (!window.filtrosParciales) window.filtrosParciales = [];
-                        // Buscar si ya existe como parcial y actualizar
-                        const idx = window.filtrosParciales.findIndex(p =>
-                            JSON.stringify(p.country_clean) === JSON.stringify(cont.country_clean) &&
-                            JSON.stringify(p.ruta_es) === JSON.stringify(cont.ruta_es)
-                        );
-                        if (cont.ratioFinal >= 1) {
-                            // Se completa: mover a completados
-                            if (idx !== -1) window.filtrosParciales.splice(idx, 1);
-                            window.filtrosCompletados.push({
-                                country_clean: cont.country_clean,
-                                ruta_es: cont.ruta_es
-                            });
-                        } else {
-                            const entry = {
-                                country_clean: cont.country_clean,
-                                ruta_es: cont.ruta_es,
-                                ratioAlcanzado: cont.ratioDesde || (idx !== -1 ? window.filtrosParciales[idx].ratioAlcanzado : 0),
-                                ratioFinal: cont.ratioFinal
-                            };
-                            if (idx !== -1) window.filtrosParciales[idx] = entry;
-                            else window.filtrosParciales.push(entry);
-                        }
-                    });
-                }
-
-                window.filtroActivo = chapter.filtroNuevo || null;
-                progresoMaximo = 0;
-
-                const rect = entry.target.getBoundingClientRect();
-                progresoBase = 1 - (rect.top / window.innerHeight);
-
+                // Si no tiene rutas, limpiar
                 if (!chapter.layers?.rutas) {
                     limpiarRutas(map);
-                }
-                else if (!window.filtroActivo && window.filtrosCompletados.length > 0) {
-                    actualizarRutas(map, 1);
+                } else {
+                    // Dibujar estado inicial (las congeladas + inicio de nuevas)
+                    dibujarRutas(map);
                 }
             }
         });
@@ -645,28 +641,26 @@ function initScrollytelling(map) {
 
     steps.forEach(step => observer.observe(step));
 
-    // ── Scroll continuo para animación de flechas ──
+    // ── Scroll continuo ──
     window.addEventListener('scroll', () => {
-        const windowH = window.innerHeight;
+        if (!activeStep) return;
+
+        const chapter = chapters[activeStep];
+        if (!chapter || !chapter.layers?.rutas) return;
 
         const activeEl = document.querySelector(`.step[data-step="${activeStep}"]`);
         if (!activeEl) return;
 
-        const chapter = chapters[activeStep];
-        if (!chapter) return;
-
         const rect = activeEl.getBoundingClientRect();
-        const progresoRaw = 1 - (rect.top / windowH);
+        const windowH = window.innerHeight;
 
-        const rango = 1 - progresoBase;
-        const progresoNorm = rango > 0
-            ? Math.max(0, Math.min(1, (progresoRaw - progresoBase) / rango))
-            : 0;
+        // Progreso: 0 cuando el step entra, 1 cuando sale
+        // El step se activa cuando su centro está en pantalla (threshold 0.5)
+        // así que mapeamos desde ese punto hasta que desaparece
+        const raw = 1 - (rect.top / windowH);
+        scrollProgreso = Math.max(0, Math.min(1, (raw - 0.5) / 0.5));
 
-        if (chapter.layers?.rutas &&
-            (window.filtroActivo || window.filtrosCompletados.length > 0)) {
-            actualizarRutas(map, progresoNorm);
-        }
+        dibujarRutas(map);
     });
 }
 
