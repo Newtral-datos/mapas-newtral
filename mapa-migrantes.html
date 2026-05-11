@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rutas migratorias más mortíferas</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.5.0/dist/maplibre-gl.css">
+    <link rel="stylesheet" href="css/mapa-migrantes.css">
+</head>
+<body>
+
+<div id="map"></div>
+
+<div id="story">
+
+    <!-- ===== 0. INTRO ===== -->
+    <div class="step intro" data-step="intro">
+        <div class="intro-content">
+            <div class="counter" id="death-counter">0</div>
+            <div class="subtitle">migrantes muertos entre<br>2014 y 2024</div>
+        </div>
+    </div>
+
+    <!-- ===== 1. MEDITERRÁNEO ===== -->
+    <div class="step" data-step="mediterraneo">
+        <div class="step-content">
+            <h2>El Mediterráneo</h2>
+            <p>El Mediterráneo es la ruta más mortífera, con al menos
+               20.000 migrantes fallecidos en la última década.</p>
+        </div>
+    </div>
+
+    <!-- ===== 2. GLOBAL CONTEXTO ===== -->
+    <div class="step" data-step="global-contexto">
+        <div class="step-content">
+            <h2>Un viaje sin retorno</h2>
+            <p>Este es el viaje de quienes buscando una vida mejor
+               no pudieron llegar a sus destinos.</p>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         BLOQUE AMÉRICA
+         ══════════════════════════════════════════ -->
+
+    <!-- ===== 3. Venezuela → Darién ===== -->
+    <div class="step" data-step="america-venezuela">
+        <div class="step-content">
+            <h2>Los caminos invisibles</h2>
+            <p>Las muertes de los migrantes no ocurren solo en grandes mares
+               o en vallas fronterizas. Se reparten por los caminos que debían
+               llevarlos hacia sus destinos.</p>
+        </div>
+    </div>
+
+    <!-- ===== 4. Ecuador → EEUU ===== -->
+    <div class="step" data-step="america-ecuador">
+        <div class="step-content">
+            <h2>Desde el primer paso</h2>
+            <p>Desde el comienzo de su viaje ya se enfrentan a problemas.
+               La selva del Darién, una de las rutas más peligrosas del
+               continente, se cobra cientos de vidas cada año.</p>
+        </div>
+    </div>
+
+    <!-- ===== 5. Centroamérica ===== -->
+    <div class="step" data-step="america-centro">
+        <div class="step-content">
+            <h2>Centroamérica</h2>
+            <p>Texto ejemplo.</p>
+        </div>
+    </div>
+
+    <!-- ===== 6. México → frontera EEUU ===== -->
+    <div class="step" data-step="america-norte">
+        <div class="step-content">
+            <h2>La frontera norte</h2>
+            <p>Texto ejemplo.</p>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         BLOQUE ÁFRICA
+         ══════════════════════════════════════════ -->
+
+    <!-- ===== 7. Cuerno de África ===== -->
+    <div class="step" data-step="africa-cuerno">
+        <div class="step-content">
+            <h2>El Cuerno de África</h2>
+            <p>Texto ejemplo.</p>
+        </div>
+    </div>
+
+    <!-- ===== 8. Cruce del Sáhara ===== -->
+    <div class="step" data-step="africa-sahara">
+        <div class="step-content">
+            <h2>Cruzar el Sáhara</h2>
+            <p>Cruzar el Sáhara es tan mortal como cruzar el mar.</p>
+        </div>
+    </div>
+
+    <!-- ===== 9. Mediterráneo Central ===== -->
+    <div class="step" data-step="africa-med-central">
+        <div class="step-content">
+            <h2>Mediterráneo Central</h2>
+            <p>Texto ejemplo.</p>
+        </div>
+    </div>
+
+    <!-- ===== 10. Mediterráneo Occidental + Canarias ===== -->
+    <div class="step" data-step="africa-med-occidental">
+        <div class="step-content">
+            <h2>Mediterráneo Occidental y Canarias</h2>
+            <p>Texto ejemplo.</p>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         BLOQUE ORIENTE MEDIO
+         ══════════════════════════════════════════ -->
+
+    <!-- ===== 11. Afganistán ===== -->
+    <div class="step" data-step="oriente-afganistan">
+        <div class="step-content">
+            <h2>Afganistán</h2>
+            <p>Texto ejemplo.</p>
+        </div>
+    </div>
+
+    <!-- ===== 12. Siria e Iraq ===== -->
+    <div class="step" data-step="oriente-siria">
+        <div class="step-content">
+            <h2>Siria e Iraq</h2>
+            <p>Texto ejemplo.</p>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         BLOQUE ASIA
+         ══════════════════════════════════════════ -->
+
+    <!-- ===== 13. Myanmar ===== -->
+    <div class="step" data-step="asia-myanmar">
+        <div class="step-content">
+            <h2>Myanmar</h2>
+            <p>Texto ejemplo.</p>
+        </div>
+    </div>
+
+    <!-- ===== 14. Vista global final ===== -->
+    <div class="step" data-step="global-final">
+        <div class="step-content">
+            <h2>Un mapa global de muerte</h2>
+            <p>Texto ejemplo.</p>
+        </div>
+    </div>
+
+    <div class="step" data-step="fin"></div>
+</div>
+
+<!-- Scripts al final del body para no bloquear el renderizado -->
+<script src="https://unpkg.com/maplibre-gl@4.5.0/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/@turf/turf@7/turf.min.js"></script>
+<script src="js/mapa-migrantes.js"></script>
+
+</body>
+</html>
