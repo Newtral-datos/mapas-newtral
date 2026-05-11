@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Índice de Mapas - Repo</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #494949;
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #01f3b3;
+            font-size: 2.5rem;
+            border-bottom: 2px solid #f2f2f2;
+            padding-bottom: 10px;
+            margin-bottom: 40px;
+        }
+
+        .item {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-left: 4px solid #01f3b3;
+            background: #fafafa;
+            border-radius: 0 8px 8px 0;
+            transition: transform 0.2s;
+        }
+
+        .item:hover {
+            transform: translateX(5px);
+        }
+
+        .item h2 {
+            margin-top: 0;
+            color: #494949;
+            font-size: 1.4rem;
+        }
+
+        .description {
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .links a {
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        /* Estilo para el enlace al mapa (Principal) */
+        .link-mapa {
+            background-color: #01f3b3;
+            color: #000;
+        }
+
+        .link-mapa:hover {
+            background-color: #00cca6;
+        }
+
+        /* Estilo para el enlace a la noticia (Secundario) */
+        .link-noticia {
+            border: 1px solid #494949;
+            color: #494949;
+        }
+
+        .link-noticia:hover {
+            background-color: #494949;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Repositorio de mapas</h1>
+
+    <div class="item">
+        <h2>Mapa rutas migratorias mortales</h2>
+        <p class="description">Un scrollytelling donde se visualizan las rutas de migraciones mundiales donde se produce un mayor número de fallecimientos.</p>
+        <div class="links">
+            <a href="mapa-migrantes.html" class="link-mapa">Enlace al mapa</a>
+            <a href="https://noticia-ejemplo.com" class="link-noticia">Enlace a la noticia</a>
+        </div>
+    </div>
+
+    <div class="item">
+        <h2>Título</h2>
+        <p class="description">Texto</p>
+        <div class="links">
+            <a href=".html" class="link-mapa">Enlace al mapa</a>
+            <a href="https://noticia-ejemplo.com" class="link-noticia">Enlace a la noticia</a>
+        </div>
+    </div>
+
+    </div>
+
+</body>
+</html>
