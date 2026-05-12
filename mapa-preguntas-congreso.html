@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¿Preguntan los diputados por tu municipio?</title>
+
+  <script src="https://unpkg.com/maplibre-gl@4.1.2/dist/maplibre-gl.js"></script>
+  <link href="https://unpkg.com/maplibre-gl@4.1.2/dist/maplibre-gl.css" rel="stylesheet" />
+  <script src="https://unpkg.com/pmtiles@3.0.7/dist/pmtiles.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/6.5.0/turf.min.js"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --panel-width: 20vw;
+      --panel-min: 280px;
+      --panel-max: 360px;
+      --bg: #fdfdfd;
+      --text: #1a1a1a;
+      --muted: #888;
+      --border: #e0e0e0;
+      --accent: #00d99f;
+      --radius: 3px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body, html { height: 100%; font-family: 'DM Sans', sans-serif; color: var(--text); overflow: hidden; }
+
+    #app { display: flex; height: 100%; width: 100%; }
+
+    /* ---- PANEL ---- */
+    #panel {
+      width: clamp(var(--panel-min), var(--panel-width), var(--panel-max));
+      height: 100%;
+      background: var(--bg);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      z-index: 10;
+      transition: margin-left 0.35s ease;
+      flex-shrink: 0;
+      position: relative;
+    }
+    #panel.closed { margin-left: calc(-1 * clamp(var(--panel-min), var(--panel-width), var(--panel-max))); }
+
+    #panel-header { padding: 22px 18px 10px; }
+    #panel-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.22rem;
+      line-height: 1.3;
+      font-weight: 400;
+    }
+
+    #panel-body {
+      flex: 1;
+      padding: 0 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      overflow-y: auto;
+    }
+
+    /* Buscadores propios */
+    .search-box { position: relative; }
+    .search-box input {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      outline: none;
+    }
+    .search-box input:focus { border-color: var(--accent); }
+    .search-box input::placeholder { color: #bbb; }
+
+    .search-results {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0; right: 0;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 var(--radius) var(--radius);
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 100;
+    }
+    .search-item {
+      padding: 7px 10px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .search-item:hover { background: #f5f5f5; }
+    .search-count {
+      font-size: 0.7rem;
+      color: var(--muted);
+      background: #f0f0f0;
+      padding: 1px 6px;
+      border-radius: 8px;
+    }
+
+    /* Botones tipo */
+    .btn-group { display: flex; gap: 6px; }
+    .btn-group button {
+      flex: 1; padding: 7px 0;
+      border: 1px solid var(--border); border-radius: var(--radius);
+      background: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem; font-weight: 600;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .btn-group button:hover { background: #f5f5f5; }
+    .btn-group button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    /* Filtro partidos */
+    .filter-section label {
+      display: block; font-size: 0.72rem; font-weight: 600;
+      color: var(--muted); text-transform: uppercase;
+      letter-spacing: 0.5px; margin-bottom: 5px;
+    }
+    #partido-filter {
+      width: 100%; padding: 7px 10px;
+      border: 1px solid var(--border); border-radius: var(--radius);
+      font-family: 'DM Sans', sans-serif; font-size: 0.82rem;
+      background: #fff; cursor: pointer;
+    }
+
+    /* Leyenda */
+    .legend-box {
+      background: #fafafa;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 12px;
+      font-size: 0.72rem;
+      color: #555;
+      line-height: 1.5;
+    }
+    .legend-bar {
+      height: 10px; width: 100%;
+      background: linear-gradient(to right, #c7e9c0 0%, #74c476 40%, #41ab5d 60%, #238b45 80%, #005a32 100%);
+      border-radius: 3px; margin: 6px 0 3px;
+    }
+    .legend-labels {
+      display: flex; justify-content: space-between;
+      font-size: 0.65rem; color: var(--muted);
+    }
+    .legend-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+
+    /* Acciones */
+    .action-btns { display: flex; gap: 6px; }
+    .action-btns button {
+      flex: 1; padding: 8px 0;
+      border: 1px solid var(--border); border-radius: var(--radius);
+      background: #fff; font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .action-btns button:hover { background: #f5f5f5; }
+
+    /* Footer / cerrar */
+    #panel-footer { padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; }
+    #btn-close-panel {
+      background: none; border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.73rem; color: var(--muted); cursor: pointer;
+    }
+    #btn-close-panel:hover { color: var(--text); }
+    #btn-info {
+      background: none; border: 1px solid var(--border);
+      border-radius: 50%; width: 24px; height: 24px;
+      font-size: 0.72rem; font-weight: 700; color: var(--muted);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    #btn-info:hover { color: var(--text); border-color: #bbb; }
+
+    /* Botón abrir (panel cerrado) */
+    #btn-open-panel {
+      display: none;
+      position: absolute;
+      left: 12px; top: 12px;
+      z-index: 20;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      flex-direction: column;
+      gap: 4px;
+      max-width: 220px;
+    }
+    #btn-open-panel.visible { display: flex; }
+    #btn-open-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 0.88rem;
+      line-height: 1.3;
+    }
+    #btn-open-trigger {
+      background: none; border: none;
+      font-size: 0.72rem; color: var(--muted);
+      cursor: pointer; padding: 0;
+      font-family: 'DM Sans', sans-serif;
+      text-align: left;
+    }
+    #btn-open-trigger:hover { color: var(--text); }
+
+    /* ---- MAPA ---- */
+    #map-wrap { flex: 1; position: relative; }
+    #map { position: absolute; inset: 0; }
+
+    /* ---- POPUP ---- */
+    .maplibregl-popup-content {
+      font-family: 'DM Sans', sans-serif;
+      padding: 0 !important;
+      border-radius: 3px !important;
+      overflow: hidden;
+      min-width: 260px; max-width: 310px;
+    }
+    .popup-card { padding: 14px 16px; }
+    .popup-nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 6px 16px; background: #fafafa;
+      border-bottom: 1px solid #eee;
+      font-size: 0.72rem; color: var(--muted);
+    }
+    .popup-nav button {
+      background: none; border: none;
+      font-size: 1.1rem; cursor: pointer;
+      color: var(--muted); padding: 0 4px;
+    }
+    .popup-nav button:hover { color: var(--text); }
+    .popup-pregunta { font-size: 0.85rem; line-height: 1.45; margin-bottom: 10px; }
+    .popup-partido { font-weight: 700; font-size: 0.78rem; margin-bottom: 2px; }
+    .popup-autores { font-size: 0.75rem; color: var(--muted); margin-bottom: 10px; }
+    .popup-link {
+      display: inline-block; font-size: 0.78rem;
+      color: var(--accent); text-decoration: none; font-weight: 600;
+    }
+    .popup-link:hover { text-decoration: underline; }
+
+    /* ---- MODAL INFO ---- */
+    #info-modal {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.35);
+      z-index: 9999;
+      align-items: center; justify-content: center;
+    }
+    #info-modal .modal-box {
+      background: #fff;
+      border-radius: 8px;
+      padding: 24px 28px;
+      max-width: 420px;
+      width: 90%;
+      font-size: 0.82rem;
+      line-height: 1.6;
+    }
+    #info-modal h3 { font-family: 'DM Serif Display', serif; margin-bottom: 10px; font-weight: 400; }
+    #info-modal a { color: var(--accent); }
+    #info-modal .modal-close {
+      margin-top: 14px; background: none; border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 6px 16px;
+      font-family: 'DM Sans', sans-serif; cursor: pointer;
+    }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 700px) {
+      :root { --panel-min: 100vw; --panel-max: 100vw; --panel-width: 100vw; }
+      #panel { position: absolute; left: 0; top: 0; height: 100%; z-index: 100; }
+      #panel.closed { margin-left: -100vw; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="app">
+
+  <div id="panel">
+    <div id="panel-header">
+      <h1>¿Preguntan los diputados por tu municipio?</h1>
+    </div>
+
+    <div id="panel-body">
+      <!-- Buscador municipios -->
+      <div class="search-box">
+        <input type="text" id="search-municipio" placeholder="Busca tu municipio…" autocomplete="off">
+        <div class="search-results" id="search-results"></div>
+      </div>
+
+      <!-- Buscador diputados -->
+      <div class="search-box search-box-dip">
+        <input type="text" id="search-diputado" placeholder="Busca un/a diputado/a…" autocomplete="off">
+        <div class="search-results" id="search-results-dip"></div>
+      </div>
+
+      <!-- Tipo -->
+      <div class="btn-group" id="tipo-btns">
+        <button data-tipo="ambos" class="active">Ambos</button>
+        <button data-tipo="municipio">Municipio</button>
+        <button data-tipo="lugar">Lugares</button>
+      </div>
+
+      <!-- Filtro partidos -->
+      <div class="filter-section">
+        <label>Partido político</label>
+        <select id="partido-filter">
+          <option value="todos">Todos los partidos</option>
+        </select>
+      </div>
+
+      <!-- Leyenda -->
+      <div class="legend-box">
+        <div style="margin-bottom: 8px;">
+          <span class="legend-dot" style="background:#74c476;"></span>
+          <strong>Municipios:</strong>
+        </div>
+        <div class="legend-bar"></div>
+        <div class="legend-labels">
+          <span>Menos preguntas</span><span>Más preguntas</span>
+        </div>
+        <div style="margin-top: 10px;">
+          <span class="legend-dot" style="background:#e30613; border: 1px solid #fff;"></span>
+          <strong>Puntos:</strong> preguntas sobre lugares concretos (color = partido)
+        </div>
+      </div>
+
+      <!-- Acciones -->
+      <div class="action-btns">
+        <button id="btn-canarias">Canarias ✈️</button>
+        <button id="btn-azar">Al azar 🎲</button>
+      </div>
+    </div>
+
+    <div id="panel-footer">
+      <button id="btn-close-panel">← Cerrar el menú</button>
+      <button id="btn-info">i</button>
+    </div>
+  </div>
+
+  <!-- Botón reabrir -->
+  <div id="btn-open-panel">
+    <span id="btn-open-title">¿Preguntan por tu municipio?</span>
+    <button id="btn-open-trigger">Abrir el menú →</button>
+  </div>
+
+  <div id="map-wrap">
+    <div id="map"></div>
+  </div>
+</div>
+
+<!-- Modal info -->
+<div id="info-modal">
+  <div class="modal-box">
+    <h3>Acerca de este mapa</h3>
+    <p>
+      <i>Pueden existir fallos en la localización de algunas de las preguntas. Para más información ver la metodología.</i><br>
+      Los datos se han extraido del <a href="https://www.congreso.es" target="_blank">Congreso</a> (XV Legislatura, hasta el 23 de abril de 2026).
+    </p>
+    <p style="margin-top: 8px;">
+      <strong>Fuentes cartográficas:</strong><br>
+      Mapa base: <a href="https://carto.com/attributions" target="_blank">© CARTO</a><br>
+      Datos geográficos: <a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a><br>
+      Límites administrativos: elaboración propia a partir de datos del <a href="https://www.ign.es" target="_blank">IGN</a>
+    </p>
+    <button class="modal-close" onclick="this.closest('#info-modal').style.display='none'">Cerrar</button>
+  </div>
+</div>
+
+<script src="js/mapa-preguntas-congreso.js"></script>
+</body>
+</html>
