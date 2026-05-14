@@ -2,6 +2,8 @@
 // 1. MAPA BASE — con relieve Esri inyectado en el estilo
 // ================================================================
 
+const isMobile = window.innerWidth < 768;
+
 async function initMap() {
 
     const styleResp = await fetch(
@@ -178,7 +180,7 @@ const chapters = {
         layers: { heatmap: true, rutas: true },
         filtroNuevo: {
             country_clean: ["Eritrea", "Sudan", "Egypt", "Ivory Coast",
-                            "Tunisia", "Syria", "Pakistan", "Bangladesh",],
+                            "Tunisia", "Syria", "Pakistan", "Bangladesh"],
             ruta_es: ["Mediterráneo Central"]
         }
     },
@@ -232,6 +234,7 @@ const chapters = {
     'darien': {
         center: [-77, 7], zoom: 6,
         layers: { heatmap: true, rutas: true },
+        filtroNuevo: null,
         continuar: [
             {
                 country_clean: ["Venezuela"],
@@ -353,13 +356,12 @@ const chapters = {
 };
 
 
-
 // ================================================================
 // 3. CUANDO EL MAPA ESTÁ LISTO
 // ================================================================
 async function onMapReady(map) {
 
-    // ── Heatmap ráster ──
+    // ── Heatmap ráster — visible desde el inicio ──
     map.addSource('heatmap-raster', {
         type: 'image',
         url: 'datos/heatmap-puntos.png',
@@ -375,7 +377,7 @@ async function onMapReady(map) {
         id: 'heatmap-layer',
         type: 'raster',
         source: 'heatmap-raster',
-        paint: { 'raster-opacity': 0 }
+        paint: { 'raster-opacity': 0.85 }
     });
 
     // ── Rutas GeoJSON ──
@@ -403,6 +405,30 @@ async function onMapReady(map) {
         data: { type: 'FeatureCollection', features: [] }
     });
 
+    // Estilo de líneas: simplificado en móvil
+    const lineWidthExpr = isMobile
+        ? [
+            'interpolate', ['linear'], ['zoom'],
+            2, 1.5,
+            5, 3,
+            8, 5
+        ]
+        : [
+            'interpolate', ['linear'], ['zoom'],
+            2, [
+                'step', ['get', 'fallecidos'],
+                1.5, 172.83, 2, 333.88, 2.6, 904, 3, 1671.5, 3.2
+            ],
+            5, [
+                'step', ['get', 'fallecidos'],
+                3, 172.83, 4, 333.88, 5.2, 904, 6, 1671.5, 6.4
+            ],
+            8, [
+                'step', ['get', 'fallecidos'],
+                5, 172.83, 7, 333.88, 9, 904, 10.5, 1671.5, 11
+            ]
+        ];
+
     map.addLayer({
         id: 'rutas-layer',
         type: 'line',
@@ -411,21 +437,7 @@ async function onMapReady(map) {
         paint: {
             'line-color': '#494949DD',
             'line-opacity': 1,
-            'line-width': [
-                'interpolate', ['linear'], ['zoom'],
-                2, [
-                    'step', ['get', 'fallecidos'],
-                    1.5, 172.83, 2, 333.88, 2.6, 904, 3, 1671.5, 3.2
-                ],
-                5, [
-                    'step', ['get', 'fallecidos'],
-                    3, 172.83, 4, 333.88, 5.2, 904, 6, 1671.5, 6.4
-                ],
-                8, [
-                    'step', ['get', 'fallecidos'],
-                    5, 172.83, 7, 333.88, 9, 904, 10.5, 1671.5, 11
-                ]
-            ]
+            'line-width': lineWidthExpr
         }
     });
 
@@ -483,36 +495,7 @@ function crearIconoFlecha(map) {
 
 
 // ================================================================
-// 5. CONTADOR ANIMADO
-// ================================================================
-const COUNTER_DURATION = 4000;
-let introAnimated = false;
-
-function startCounterAnimation(map) {
-    if (introAnimated) return;
-    introAnimated = true;
-
-    const duration = 2000;
-    const startTime = performance.now();
-
-    function tick(now) {
-        const elapsed = now - startTime;
-        const progreso = Math.min(elapsed / duration, 1);
-        const eased = 1 - Math.pow(1 - progreso, 3);
-
-        map.setPaintProperty('heatmap-layer', 'raster-opacity', eased * 0.85);
-
-        if (progreso < 1) {
-            requestAnimationFrame(tick);
-        }
-    }
-
-    requestAnimationFrame(tick);
-}
-
-
-// ================================================================
-// 6. SISTEMA DE ANIMACIÓN PROGRESIVA
+// 5. SISTEMA DE ANIMACIÓN PROGRESIVA
 // ================================================================
 
 // Genera una clave única para cada feature
@@ -543,16 +526,13 @@ function coincideAnimacion(feature, anim) {
 }
 
 function getRatioActual(feature) {
-    // Buscar si esta feature tiene una animación activa
     for (const anim of animacionesActivas) {
         if (coincideAnimacion(feature, anim)) {
-            // Interpolar entre ratioDesde y ratioFinal según scroll
             const desde = anim.ratioDesde;
             const hasta = anim.ratioFinal;
             return desde + (hasta - desde) * scrollProgreso;
         }
     }
-    // Si no tiene animación activa, devolver el ratio congelado
     const key = claveRuta(feature);
     return rutaRatios[key] || 0;
 }
@@ -629,12 +609,10 @@ function congelarAnimaciones() {
         const ratioAlcanzado = anim.ratioDesde +
             (anim.ratioFinal - anim.ratioDesde) * scrollProgreso;
 
-        // Aplicar a todas las features que coincidan
         window.rutasOriginal.features.forEach(feature => {
             if (!coincideAnimacion(feature, anim)) return;
             const key = claveRuta(feature);
             const anterior = rutaRatios[key] || 0;
-            // Nunca retrocede
             rutaRatios[key] = Math.max(anterior, ratioAlcanzado);
         });
     }
@@ -644,14 +622,10 @@ function congelarAnimaciones() {
 function construirAnimaciones(chapter) {
     const lista = [];
 
-    // Flechas nuevas
     if (chapter.filtroNuevo) {
         const fn = chapter.filtroNuevo;
         const ratioFinal = fn.ratioFinal != null ? fn.ratioFinal : 1.0;
 
-        // Para cada combinación country×ruta, el ratioDesde es
-        // lo que ya se haya acumulado previamente (normalmente 0)
-        // Usamos un representante para obtener el ratioDesde
         let ratioDesde = 0;
         if (fn.country_clean && fn.ruta_es) {
             window.rutasOriginal.features.forEach(feature => {
@@ -670,12 +644,10 @@ function construirAnimaciones(chapter) {
         });
     }
 
-    // Continuaciones
     if (chapter.continuar) {
         chapter.continuar.forEach(cont => {
             const ratioFinal = cont.ratioFinal != null ? cont.ratioFinal : 1.0;
 
-            // ratioDesde = lo máximo acumulado hasta ahora
             let ratioDesde = 0;
             window.rutasOriginal.features.forEach(feature => {
                 if (coincideAnimacion(feature, cont)) {
@@ -698,12 +670,13 @@ function construirAnimaciones(chapter) {
 
 
 // ================================================================
-// 7. SCROLLYTELLING
+// 6. SCROLLYTELLING
 // ================================================================
 function initScrollytelling(map) {
 
     const steps = document.querySelectorAll('.step');
     let activeStep = null;
+    let activeStepEl = null;
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -715,23 +688,20 @@ function initScrollytelling(map) {
                 congelarAnimaciones();
 
                 activeStep = stepId;
+                activeStepEl = entry.target;
 
                 const chapter = chapters[stepId];
                 if (!chapter) return;
 
-                // Mover el mapa
+                // Mover el mapa — más rápido en móvil
                 map.flyTo({
                     center: chapter.center,
                     zoom: chapter.zoom,
                     pitch: chapter.pitch || 0,
                     bearing: chapter.bearing || 0,
-                    duration: 2000,
+                    duration: isMobile ? 800 : 2000,
                     essential: true
                 });
-
-                if (stepId === 'contador' && !introAnimated) {
-                    startCounterAnimation(map);
-                }
 
                 // Visibilidad de capas
                 if (chapter.layers) {
@@ -751,40 +721,41 @@ function initScrollytelling(map) {
                 if (!chapter.layers?.rutas) {
                     limpiarRutas(map);
                 } else {
-                    // Dibujar estado inicial (las congeladas + inicio de nuevas)
                     dibujarRutas(map);
                 }
             }
         });
-    }, { threshold: 0.5 });
+    }, { threshold: isMobile ? 0.3 : 0.5 });
 
     steps.forEach(step => observer.observe(step));
 
-    // ── Scroll continuo ──
+    // ── Scroll continuo con throttle ──
+    let ticking = false;
+
     window.addEventListener('scroll', () => {
-        if (!activeStep) return;
+        if (ticking) return;
+        ticking = true;
 
-        const chapter = chapters[activeStep];
-        if (!chapter || !chapter.layers?.rutas) return;
+        requestAnimationFrame(() => {
+            if (!activeStep || !activeStepEl) { ticking = false; return; }
 
-        const activeEl = document.querySelector(`.step[data-step="${activeStep}"]`);
-        if (!activeEl) return;
+            const chapter = chapters[activeStep];
+            if (!chapter || !chapter.layers?.rutas) { ticking = false; return; }
 
-        const rect = activeEl.getBoundingClientRect();
-        const windowH = window.innerHeight;
+            const rect = activeStepEl.getBoundingClientRect();
+            const windowH = window.innerHeight;
 
-        // Progreso: 0 cuando el step entra, 1 cuando sale
-        // El step se activa cuando su centro está en pantalla (threshold 0.5)
-        // así que mapeamos desde ese punto hasta que desaparece
-        const raw = 1 - (rect.top / windowH);
-        scrollProgreso = Math.max(0, Math.min(1, (raw - 0.5) / 0.5));
+            const raw = 1 - (rect.top / windowH);
+            scrollProgreso = Math.max(0, Math.min(1, (raw - 0.5) / 0.5));
 
-        dibujarRutas(map);
+            dibujarRutas(map);
+            ticking = false;
+        });
     });
 }
 
 
 // ================================================================
-// 8. ARRANQUE
+// 7. ARRANQUE
 // ================================================================
 initMap();
