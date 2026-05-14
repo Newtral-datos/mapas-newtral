@@ -125,3 +125,58 @@ a.btn-descarga {
     color: #000000;
     text-decoration: none;
 }
+
+@media (max-width: 768px) {
+
+    .step {
+        padding: 10px;
+        align-items: flex-end;
+        padding-bottom: 60px;
+    }
+
+    .step.intro {
+        align-items: center;
+        padding-bottom: 20px;
+    }
+
+    .intro-content,
+    .intro-content.intro-text,
+    .intro-content.intro-counter {
+        max-width: 100%;
+        padding: 24px 20px;
+    }
+
+    .intro-content.intro-text p {
+        font-size: 1.05rem;
+        line-height: 1.45;
+    }
+
+    .intro-content .counter {
+        font-size: 3.2rem;
+    }
+
+    .intro-content .subtitle {
+        font-size: 1rem;
+    }
+
+    .step-content {
+        max-width: 100%;
+        width: 100%;
+        padding: 20px 16px;
+    }
+
+    .step-content h2 {
+        font-size: 1.15rem;
+        margin-bottom: 8px;
+    }
+
+    .step-content p {
+        font-size: 0.88rem;
+        line-height: 1.5;
+    }
+
+    .btn-descarga {
+        font-size: 1rem;
+        padding: 14px 28px;
+    }
+}
