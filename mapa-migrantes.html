@@ -14,148 +14,289 @@
 
 <div id="story">
 
-    <!-- ===== 0. INTRO ===== -->
+    <!-- ===== 0. INTRO — Mapa base sin capa fallecidos ===== -->
     <div class="step intro" data-step="intro">
-        <div class="intro-content">
-            <div class="counter" id="death-counter">0</div>
-            <div class="subtitle">migrantes muertos entre<br>2014 y 2024</div>
+        <div class="intro-content intro-text">
+            <p>Más de <b style="background:#01f3b3; padding:1px 4px; border-radius:3px;color:black;">300 millones</b> de personas se encontraban viviendo en un país diferente al de su nacimiento en 2024, según las últimas cifras <a href="https://www.un.org/development/desa/pd/sites/www.un.org.development.desa.pd/files/undesa_pd_2025_intlmigstock_2024_key_facts_and_figures_advance-unedited.pdf">registradas por la ONU</a>.</p>
+            <p><br>Pero el viaje hacia un nuevo país no siempre se completa.</p>
         </div>
     </div>
 
-    <!-- ===== 1. MEDITERRÁNEO ===== -->
+    <!-- ===== 1. CONTADOR — Aparece capa fallecidos ===== -->
+    <div class="step intro" data-step="contador">
+        <div class="intro-content">
+            <div class="subtitle">Al menos</div>
+            <div class="counter" id="death-counter">0</div>
+            <div class="subtitle"><big><b style="color:#ffffff;">migrantes murieron</b></big><br>entre 2016 y 2026<br>viajando a un nuevo país</div>
+        </div>
+    </div>
+
+    <!-- ===== 2. Texto lateral general ===== -->
+    <div class="step" data-step="contexto-general">
+        <div class="step-content">
+            <p>Los migrantes se ven expuestos a numerosos peligros durante sus viajes, hasta el punto de poder llegar a fallecer durante el trayecto.<br><br>Existen rutas donde estos riesgos son mayores, como la <b style="background:#01f3b3; padding:1px 4px; border-radius:3px;color:black;">mediterránea</b></p>
+        </div>
+    </div>
+
+    <!-- ===== 3. Zoom Mediterráneo ===== -->
     <div class="step" data-step="mediterraneo">
         <div class="step-content">
-            <h2>El Mediterráneo</h2>
-            <p>El Mediterráneo es la ruta más mortífera, con al menos
-               20.000 migrantes fallecidos en la última década.</p>
+            <p>En la última década, al menos <b>9.200 migrantes han fallecido en el Mediterráneo</b>, la principal vía de acceso a Europa para africanos y asiáticos que buscan una vida mejor. 
+                <br>A ellos se suman otros <b>6.000 que murieron en el desierto del Sahara</b>, como muestran las <a href="https://missingmigrants.iom.int/downloads?xls=1777463590">estimaciones recopiladas</a> por la Organización Internacional para las Migraciones de la ONU (OIM).</p>
         </div>
     </div>
 
-    <!-- ===== 2. GLOBAL CONTEXTO ===== -->
-    <div class="step" data-step="global-contexto">
+    <!-- ===== 4. Mediterráneo — matiz datos ===== -->
+    <div class="step" data-step="mediterraneo-matiz">
         <div class="step-content">
-            <h2>Un viaje sin retorno</h2>
-            <p>Este es el viaje de quienes buscando una vida mejor
-               no pudieron llegar a sus destinos.</p>
+            <p>Es importante tener en cuenta que se trata de estimaciones y cifras modestas, ya que el proceso de recolección de los datos es complejo, <a href = "https://missingmigrants.iom.int/sites/g/files/tmzbdl601/files/publication/file/MMP_data_collection_guidelines-ESP.pdf">como aclara el propio organismo</a>.
+                Muchos migrantes carecen de estatus legal, por lo que no siempre se registran sus fallecimientos. 
+                Cuando pierden la vida en mares o zonas remotas, sus restos no siempre son localizados.</p>
         </div>
     </div>
 
-    <!-- ══════════════════════════════════════════
-         BLOQUE AMÉRICA
-         ══════════════════════════════════════════ -->
 
-    <!-- ===== 3. Venezuela → Darién ===== -->
-    <div class="step" data-step="america-venezuela">
+    <div class="step" data-step="mediterraneo-matiz">
         <div class="step-content">
-            <p>Las muertes de los migrantes no ocurren solo en mares
-               o en vallas fronterizas. Se reparten por los caminos que debían
-               llevarlos hacia sus destinos.</p>
+            <p>Además, en regiones con una mayor cobertura mediática, como el Mediterráneo o Estados Unidos, se recopila con mayor frecuencia este tipo de información, lo que lleva a una infraestimación del número de fallecidos en otras rutas.</p>
         </div>
     </div>
 
-    <!-- ===== 4. Ecuador → EEUU ===== -->
-    <div class="step" data-step="america-ecuador">
+
+    <!-- ===== 5. Zoom Med Occidental + flechas Argelia/Marruecos ===== -->
+    <div class="step" data-step="med-occidental">
         <div class="step-content">
-            <h2>Cuellos de botella</h2>
-            <p>Desde el comienzo de su viaje ya se enfrentan a problemas.
-               La selva del Darién, una de las rutas más peligrosas del
-               continente, se cobra cientos de vidas cada año.</p>
+            <h2>Mediterráneo Occidental</h2>
+            <p>Es una de las principales vías de acceso a Europa a través de España. Desde 2016 han fallecido en ella más de 1.300 personas, 
+                procedentes principalmente de Argelia y Marruecos. Los fallecimientos en esta ruta no suceden solo en el mar, 
+                también lo hacen en torno a las vallas fronterizas de Ceuta y Melilla, como courrió en el <a href ="https://www.newtral.es/saltos-vallas-melilla-ceuta/20220625/">salto de 2022</a>.</p>
         </div>
     </div>
 
-    <!-- ===== 5. Centroamérica ===== -->
-    <div class="step" data-step="america-centro">
+    <!-- ===== 6. Flechas Canarias ===== -->
+    <div class="step" data-step="canarias">
         <div class="step-content">
-            <h2>Centroamérica</h2>
-            <p>Texto ejemplo.</p>
+            <h2>Ruta Canaria</h2>
+            <p>Otra forma de llegar a España es a través de Canarias, <a href = "https://www.newtral.es/951-personas-murieron-mar-espana-primer-semestre-2023/20230707/">la forma más peligrosa</a>
+                 de acceder al país. En ella la OIM ha registrado 1.700 fallecimientos en la última década, de los cuales casi un tercio fueron en 2024, 
+                 cuando se produjo un repunte en la ruta.<br><br></p>
+                 <iframe title="Fallecidos en la ruta canaria en la última década" aria-label="Gráfico de columnas" id="datawrapper-chart-UGLKk" src="https://datawrapper.dwcdn.net/UGLKk/4/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="412" data-external="1"></iframe><script type="text/javascript">window.addEventListener("message",function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r,i=0;r=e[i];i++)if(r.contentWindow===a.source){var d=a.data["datawrapper-height"][t]+"px";r.style.height=d}}});</script>
         </div>
     </div>
 
-    <!-- ===== 6. México → frontera EEUU ===== -->
-    <div class="step" data-step="america-norte">
+    <!-- ===== 7. Zoom general Mediterráneo — evolución rutas ===== -->
+    <div class="step" data-step="mediterraneo-evolucion">
         <div class="step-content">
-            <h2>La frontera norte</h2>
-            <p>Texto ejemplo.</p>
-        </div>
+            <p>Porque las rutas no son fijas. El número de migrantes que transita por ellas varía con los años, como muestra la evolución de fallecidos en las diferentes zonas del Mediterráneo.<br><br></p>
+            <iframe title="Fallecidos en el Mediterráneo Central, Occidental y Oriental" aria-label="Columnas apiladas" id="datawrapper-chart-DXuxx" src="https://datawrapper.dwcdn.net/DXuxx/3/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="427" data-external="1"></iframe><script type="text/javascript">window.addEventListener("message",function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r,i=0;r=e[i];i++)if(r.contentWindow===a.source){var d=a.data["datawrapper-height"][t]+"px";r.style.height=d}}});</script>        </div>
     </div>
 
-    <!-- ══════════════════════════════════════════
-         BLOQUE ÁFRICA
-         ══════════════════════════════════════════ -->
-
-    <!-- ===== 7. Cuerno de África ===== -->
-    <div class="step" data-step="africa-cuerno">
+    <!-- ===== 8. Mediterráneo — externalización ===== -->
+    <div class="step" data-step="mediterraneo-politicas">
         <div class="step-content">
-            <h2>El Cuerno de África</h2>
-            <p>Texto ejemplo.</p>
+            <p>Desde el equipo de movilidad humana de <a href = "https://ayudaenaccion.org/">Ayuda en Acción</a> explican a Newtral que los cambios 
+                en las rutas suelen ir precedidos por la imposición de políticas más estrictas por parte de los estados. Cuando aumentan las restricciones
+                 al tránsito los migrantes recurren a rutas más peligrosas, donde la presencia de autoridades es menor, de acuerdo con la ONG.</p>
+            <p>Por estas razones, hablan de la necesidad de un "enfoque basado en rutas migratorias", donde la responsabilidad por las muertes es 
+                compartida por el país de origen, el de destino y todos los de tránsito.</p>
         </div>
     </div>
 
-    <!-- ===== 8. Cruce del Sáhara ===== -->
-    <div class="step" data-step="africa-sahara">
+    <!-- ===== 9. Zoom centro África — Sahara intro ===== -->
+    <div class="step" data-step="sahara-intro">
         <div class="step-content">
-            <h2>Cruzar el Sáhara</h2>
-            <p>Cruzar el Sáhara es tan mortal como cruzar el mar.</p>
+            <p>Y es que los migrantes no siempre fallecen en fronteras a las puertas de su destino. Para llegar hasta ellas deben atravesar regiones de difícil tránsito, como sucede con el desierto del Sahara, uno de los principales obstáculos para los migrantes subsaharianos.</p>
         </div>
     </div>
 
-    <!-- ===== 9. Mediterráneo Central ===== -->
-    <div class="step" data-step="africa-med-central">
+    <!-- ===== 10. Flechas ruta Sahara ===== -->
+    <div class="step" data-step="sahara-flechas">
+        <div class="step-content">
+            <p>Al menos 6.000 migrantes habrían fallecido en este desierto en la última década, dejando un reguero de muertos que apunta hacia el Mediterráneo, 
+                lo que la sitúa como la <b style="background:#01f3b3; padding:1px 4px; border-radius:3px;color:black;">segunda ruta más mortal</b> del mundo.</p>
+        </div>
+    </div>
+
+    <!-- ===== 11. Sahara — desapariciones ===== -->
+    <div class="step" data-step="sahara-desapariciones">
+        <div class="step-content">
+            <p>El gran desierto africano da cuenta también de otro de los grandes dramas de las migraciones: las <b style="background:#01f3b3; padding:1px 4px; border-radius:3px;color:black;">desapariciones</b> de personas.</p>
+            <p>Junto a los más de 41.000 fallecidos de los que tiene constancia, la OIM incluye también en sus registros de la última década más de <b style="background:#01f3b3; padding:1px 4px; border-radius:3px;color:black;">27.000</b> desaparecidos a los que se presupone muertos.</p>
+        </div>
+    </div>
+
+    <!-- ===== 12. Sahara — cita Avallone ===== -->
+    <div class="step" data-step="sahara-cita">
+        <div class="step-content">
+            <p>Gennaro Avallone, profesor de la Universidad de Salerno experto en migraciones, explica que los datos sobre muertos en el desierto son 
+                estimaciones muy parciales, ya que muchas veces se trata de desaparecidos.<br> 
+                Esta situación dificulta el duelo de sus familiares, provocando una "reducción de la confianza y la esperanza hacia el futuro" 
+                que supone "un problema social y civilizatorio enorme".</p>
+        </div>
+    </div>
+
+    <!-- ===== 13. Zoom Med Central ===== -->
+    <div class="step" data-step="med-central">
         <div class="step-content">
             <h2>Mediterráneo Central</h2>
-            <p>Texto ejemplo.</p>
+            <p>Los migrantes que logran atravesar el Sahara deben enfrentarse a un último gran obstáculo antes de llegar a Europa, el Mediterráneo Central. Se trata de la región del mar con mayor mortalidad, acumulando <b>tres de cada cuatro muertes</b> producidas en el Mediterráneo.</p>
         </div>
     </div>
 
-    <!-- ===== 10. Mediterráneo Occidental + Canarias ===== -->
-    <div class="step" data-step="africa-med-occidental">
+    <!-- ===== 14. Zoom Turquía ===== -->
+    <div class="step" data-step="turquia">
         <div class="step-content">
-            <h2>Mediterráneo Occidental y Canarias</h2>
-            <p>Texto ejemplo.</p>
+            <p>Las muertes a las puertas de Europa no solo suceden en el mar. También se dan en las fronteras de terceros países, como Turquía. 
+                <br>La concentración de fallecidos en todos los flancos turcos no se entiende sin la externalización de fronteras promovida 
+                por la Unión Europea, como explica Avallone.</p>
         </div>
     </div>
 
-    <!-- ══════════════════════════════════════════
-         BLOQUE ORIENTE MEDIO
-         ══════════════════════════════════════════ -->
-
-    <!-- ===== 11. Afganistán ===== -->
-    <div class="step" data-step="oriente-afganistan">
+    <!-- ===== 15. Turquía — cita externalización ===== -->
+    <div class="step" data-step="turquia-cita">
         <div class="step-content">
-            <h2>Afganistán</h2>
-            <p>Texto ejemplo.</p>
+            <p>Esta política no ha cumplido con su objetivo de desincentivar la inmigración. Avallone explica que el resultado ha sido que las muertes 
+                "se han invisibilizado", contribuyendo a que "se haya normalizado que [los migrantes] sufran violencia y/o explotación laboral".<br><br></p>
+            <p>Además, este tipo de medidas "tiene el problema de que depende de los Estados con quienes se firman acuerdos", otorgando a países 
+                que atraviesan crisis internas, guerras y falta de democracia un "arma política" en sus negociaciones con la UE.</p>
         </div>
     </div>
 
-    <!-- ===== 12. Siria e Iraq ===== -->
-    <div class="step" data-step="oriente-siria">
+    <!-- ===== 16. Zoom general Med — industria migración ===== -->
+    <div class="step" data-step="mediterraneo-industria">
         <div class="step-content">
-            <h2>Siria e Iraq</h2>
-            <p>Texto ejemplo.</p>
+            <p>Con él coinciden en Ayuda en Acción, indicando que la localización de un mayor número de fallecidos en el Mediterráneo se debe a la unión 
+                de factores ambientales y políticos. "No se trata solo de la peligrosidad de la ruta, también de la política fronteriza que impide la 
+                llegada por vías legales".<br><br></p>
+            <p>Avallone explica que si las rutas se vuelven más peligrosas por la existencia de un mayor control fronterizo, 
+                los migrantes terminan recurriendo a las mafias para asegurar su viaje, lo que alimenta lo que el investigador define como 
+                la “industria de la migración”.</p>
         </div>
     </div>
 
-    <!-- ══════════════════════════════════════════
-         BLOQUE ASIA
-         ══════════════════════════════════════════ -->
-
-    <!-- ===== 13. Myanmar ===== -->
-    <div class="step" data-step="asia-myanmar">
+    <!-- ===== 17. Mediterráneo — fracaso ===== -->
+    <div class="step" data-step="mediterraneo-fracaso">
         <div class="step-content">
-            <h2>Myanmar</h2>
-            <p>Texto ejemplo.</p>
+            <p>Ante esta situación, se muestra crítico con la política migratoria europea, calificándola como "un fracaso radical". 
+                "Sabemos lo que pasa en el Mediterráneo desde hace más de 25 años, cuando empieza a haber datos. Sabemos lo que pasa con los fallecidos, 
+                las mafias, el confinamiento de personas y la explotación laboral". Sin embargo, las políticas aplicadas por la Unión, basadas en la 
+                externalización y la lucha contra las mafias, no han logrado frenar estos problemas. 
+                "¿Cuántos migrantes más tienen que morir para asumir el fracaso?", cuestiona el investigador.</p>
         </div>
     </div>
 
-    <!-- ===== 14. Vista global final ===== -->
+    <!-- ===== 18. Zoom Centroamérica ===== -->
+    <div class="step" data-step="america-politicas">
+        <div class="step-content">
+            <p>Las muertes derivadas de la externalización de fronteras y el papel de las mafias también son frecuentes en América, como destacan desde Ayuda en Acción. "Es la falta de vías legales la que obliga a recurrir a vías alternativas, cuya gestión es ocupada por el crimen".<br><br></p>
+            <p>Aunque los migrantes conocen los riesgos, "no es una decisión libre", ya que cuentan con factores de exclusión que les empujan a tomar esta decisión. 
+                Además, se trata de una elección "parcialmente informada", encontrando riesgos que no esperaban o no sabían dimensionar.</p>
+        </div>
+    </div>
+
+    <!-- ===== 19. Zoom América — políticas restrictivas ===== -->
+    <div class="step" data-step="america-politicas">
+        <div class="step-content">
+            <p>Al igual que sucede en Europa, en América la situación ha empeorado por el endurecimiento de las medidas implementadas por los estados de tránsito. Ayuda en Acción pone el ejemplo de la adopción de una política más restrictiva en materia de visados por parte del gobierno mexicano. Para sortear las restricciones, los migrantes recurren a mafias y atraviesan rutas más peligrosas.</p>
+        </div>
+    </div>
+
+    <!-- ===== 20. Zoom Tapón de Darién ===== -->
+    <div class="step" data-step="darien">
+        <div class="step-content">
+            <h2>Tapón de Darién</h2>
+            <p>Es lo que sucede en el Tapón de Darién, el principal cuello de botella para los migrantes sudamericanos. Como explican desde Ayuda en Acción 
+                "no hay otra ruta terrestre para pasar desde el sur". Se trata de "una región conocida por sus intransitables pantanos y 
+                densos bosques tropicales", como <a href="https://missingmigrants.iom.int/sites/g/files/tmzbdl601/files/publication/file/MMP_data_collection_guidelines-ESP.pdf">recoge la OIM</a>.
+                <br>Como consecuencia, aumenta el riesgo de muerte al mismo tiempo que “apenas existen datos” sobre la cifra real de migrantes que fallecen en la región.<BR><BR></p>
+                <p>FOTO FOTO FOTO</p>
+        </div>
+    </div>
+
+    <!-- ===== 21. Centroamérica — flechas sin texto ===== -->
+    <div class="step" data-step="centroamerica-flechas">
+        <div class="step-content step-empty">
+        </div>
+    </div>
+
+    <!-- ===== 22. Zoom México/frontera EEUU ===== -->
+    <div class="step" data-step="frontera-eeuu">
+        <div class="step-content">
+            <h2>Frontera EEUU-México</h2>
+            <p>Las muertes en la ruta hacia Estados Unidos se terminan concentrando en torno a la frontera del país, especialmente en el este de Texas. 
+                <br>Para Ayuda en Acción, esta barrera es un buen ejemplo de militarización de fronteras y las consecuencias que conlleva: "las restricciones en las fronteras no reducen el tránsito, lo dificultan".</p>
+        </div>
+    </div>
+
+    <!-- ===== 23. Zoom Cuerno de África ===== -->
+    <div class="step" data-step="cuerno-africa">
+        <div class="step-content">
+            <p>Estas situaciones no se dan únicamente en el tránsito hacia países occidentales. Tras la ruta mexicano-estadounidense, 
+                las <a href = "https://publications.iom.int/books/world-migration-report-2026">zonas con mayor flujo</a> de migrantes en 2024 se 
+                localizaron en Oriente Próximo, en las fronteras entre Afganistán e Irán y Siria y Turquía, según la ONU.
+                
+                <br><br>
+                Los datos de fallecimientos muestran que entre las rutas más mortíferas se encuentran dos que parten del cuerno de África…</p>
+        </div>
+    </div>
+
+    <!-- ===== 24. Zoom Irán ===== -->
+    <div class="step" data-step="ruta-iran">
+        <div class="step-content">
+            <p>…la ruta afgano-iraní…</p>
+        </div>
+    </div>
+
+    <!-- ===== 25. Zoom Myanmar ===== -->
+    <div class="step" data-step="myanmar">
+        <div class="step-content">
+            <p>…o dos de las nacidas en Myanmar.</p>
+        </div>
+    </div>
+
+    <!-- ===== 26. Subencabezado — ¿Se puede hacer algo? ===== -->
+    <div class="step" data-step="solucion-intro">
+        <div class="step-content">
+            <h2>¿Se puede hacer algo para evitar estas tragedias?</h2>
+            <p>Para Gennaro Avallone hay evidencias de que otra forma de actuar por parte de las instituciones estatales es posible, sirviendo de ejemplo el caso de Ucrania.</p>
+        </div>
+    </div>
+
+    <!-- ===== 27. Zoom Centroeuropa — Ucrania ===== -->
+    <div class="step" data-step="ucrania">
+        <div class="step-content">
+            <p>Tras el comienzo de la invasión rusa en 2022, la Unión Europea <a href = "https://data.consilium.europa.eu/doc/document/ST-6846-2022-INIT/es/pdf">
+                puso en marcha mecanismos</a> que facilitaron la acogida de ucranianos. 
+                Según <a href = "https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20260508-1">Eurostat</a>, en marzo de 2026 4,3 millones de ciudadanos de Ucrania contaban con 
+                protección especial para residir en la UE.</p>
+            <p><br>Por su parte, la OIM ha registrado el fallecimiento de 84 ucranianos en la frontera europea desde 2022.</p>
+        </div>
+    </div>
+
+    <!-- ===== 28. Zoom mundial — cierre Avallone ===== -->
+    <div class="step" data-step="global-cierre">
+        <div class="step-content">
+            <p>Para Gennaro Avallone, estas cifras demuestran que poner freno a la muerte de migrantes en las rutas "es una cuestión política". "Defender la vida no es luchar contra los traficantes, es garantizar la libertad de movilización para que las mafias no sigan prestando sus servicios".</p>
+        </div>
+    </div>
+
+    <!-- ===== 29. Cierre — Ayuda en Acción ===== -->
     <div class="step" data-step="global-final">
         <div class="step-content">
-            <h2>Un mapa global de muerte</h2>
-            <p>Texto ejemplo.</p>
+            <p>Desde Ayuda en Acción indican que la solución debe pasar también por la articulación entre organizaciones de diferentes países y el uso de mecanismos ya existentes para tratar de lograr que las rutas sean más seguras.</p>
         </div>
     </div>
 
-    <div class="step" data-step="fin"></div>
+    <!-- ===== 30. Botón descarga ===== -->
+    <div class="step intro" data-step="fin">
+        <div class="intro-content" style="background:transparent; backdrop-filter:none;">
+            <a href="https://raw.githubusercontent.com/TU_USUARIO/TU_REPO/main/mapa-completo.png"
+               download="mapa-migrantes.png"
+               class="btn-descarga">
+                Descargar mapa completo
+            </a>
+        </div>
+    </div>
 </div>
 
 <!-- Scripts al final del body para no bloquear el renderizado -->
