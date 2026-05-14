@@ -496,15 +496,17 @@ function startCounterAnimation(map) {
     const counterEl = document.getElementById('death-counter');
     if (!counterEl) return;
 
+    // Mostrar valor final directamente
+    counterEl.textContent = TARGET_COUNT.toLocaleString('es-ES');
+
+    // Animar solo la opacidad del heatmap
+    const duration = 2000;
     const startTime = performance.now();
 
     function tick(now) {
         const elapsed = now - startTime;
-        const progreso = Math.min(elapsed / COUNTER_DURATION, 1);
+        const progreso = Math.min(elapsed / duration, 1);
         const eased = 1 - Math.pow(1 - progreso, 3);
-
-        const value = Math.floor(TARGET_COUNT * eased);
-        counterEl.textContent = value.toLocaleString('es-ES');
 
         map.setPaintProperty('heatmap-layer', 'raster-opacity', eased * 0.85);
 
