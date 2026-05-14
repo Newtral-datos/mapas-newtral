@@ -47,42 +47,42 @@ const chapters = {
     // ── 0. INTRO: mapa global, SIN heatmap ──
     'intro': {
         center: [1, 30], zoom: 2,
-        layers: { heatmap: true, rutas: false },
+        layers: { rutas: false },
         filtroNuevo: null
     },
 
     // ── 1. CONTADOR: mismo encuadre, APARECE heatmap ──
     'contador': {
         center: [1, 30], zoom: 2,
-        layers: { heatmap: true, rutas: false },
+        layers: { rutas: false },
         filtroNuevo: null
     },
 
     // ── 2. Contexto general (mismo zoom global) ──
     'contexto-general': {
         center: [1, 30], zoom: 2,
-        layers: { heatmap: true, rutas: false },
+        layers: { rutas: false },
         filtroNuevo: null
     },
 
     // ── 3. Zoom Mediterráneo ──
     'mediterraneo': {
         center: [15, 36], zoom: 3.5,
-        layers: { heatmap: true, rutas: false },
+        layers: { rutas: false },
         filtroNuevo: null
     },
 
     // ── 4. Mediterráneo — matiz datos (mismo zoom) ──
     'mediterraneo-matiz': {
         center: [15, 36], zoom: 3.5,
-        layers: { heatmap: true, rutas: false },
+        layers: { rutas: false },
         filtroNuevo: null
     },
 
     // ── 5. Med Occidental + flechas Argelia/Marruecos ──
     'med-occidental': {
         center: [-2, 35], zoom: 5,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: {
             country_clean: ["Morocco", "Algeria"],
             ruta_es: ["Mediterráneo Occidental"]
@@ -92,7 +92,7 @@ const chapters = {
     // ── 6. Canarias — flechas Senegal etc. ──
     'canarias': {
         center: [-14, 27], zoom: 4.5,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: {
             country_clean: ["Senegal", "Morocco"],
             ruta_es: ["Ruta Atlántica a Canarias"]
@@ -102,28 +102,28 @@ const chapters = {
     // ── 7. Zoom general Med — evolución (sin flechas nuevas) ──
     'mediterraneo-evolucion': {
         center: [15, 36], zoom: 3.5,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: null
     },
 
     // ── 8. Med — políticas (mismo zoom) ──
     'mediterraneo-politicas': {
         center: [15, 36], zoom: 3.5,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: null
     },
 
     // ── 9. Zoom centro África — intro Sahara ──
     'sahara-intro': {
         center: [15, 18], zoom: 4,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: null
     },
 
     // ── 10. Flechas Sahara ──
     'sahara-flechas': {
         center: [15, 18], zoom: 4,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: {
             country_clean: ["Niger", "Nigeria", "Sudan"],
             ruta_es: ["Cruce del Sáhara"]
@@ -133,21 +133,21 @@ const chapters = {
     // ── 11. Sahara — desapariciones (mismo zoom) ──
     'sahara-desapariciones': {
         center: [15, 18], zoom: 4,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: null
     },
 
     // ── 12. Sahara — cita Avallone (mismo zoom) ──
     'sahara-cita': {
         center: [15, 18], zoom: 4,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: null
     },
 
     // ── 13. Zoom Med Central ──
     'med-central': {
         center: [15, 34], zoom: 4.5,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: {
             country_clean: ["Eritrea", "Sudan", "Egypt", "Ivory Coast",
                             "Tunisia", "Syria", "Pakistan", "Bangladesh"],
@@ -158,7 +158,7 @@ const chapters = {
     // ── 14. Zoom Turquía ──
     'turquia': {
         center: [30, 39], zoom: 5,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: {
             country_clean: ["Syria", "Iraq", "Afghanistan"],
             ruta_es: ["Siria a Turquía", "Mediterráneo Oriental", "Irán a Turquía"]
@@ -168,42 +168,42 @@ const chapters = {
     // ── 15. Turquía — cita (mismo zoom) ──
     'turquia-cita': {
         center: [30, 39], zoom: 5,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: null
     },
 
     // ── 16. Zoom general Med — industria migración ──
     'mediterraneo-industria': {
         center: [15, 36], zoom: 3.5,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: null
     },
 
     // ── 17. Med — fracaso (mismo zoom) ──
     'mediterraneo-fracaso': {
         center: [15, 36], zoom: 3.5,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: null
     },
 
     // ── 18. Zoom Centroamérica ──
     'centroamerica': {
         center: [-82, 10], zoom: 5,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: null
     },
 
     // ── 19. Zoom América general — políticas ──
     'america-politicas': {
         center: [-90, 18], zoom: 4,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: null
     },
 
     // ── 20. Zoom Darién ──
     'darien': {
         center: [-77, 7], zoom: 6,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: null,
         continuar: [
             {
@@ -222,7 +222,7 @@ const chapters = {
     // ── 21. Centroamérica — flechas sin texto ──
     'centroamerica-flechas': {
         center: [-88, 14], zoom: 5,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: {
             country_clean: ["El Salvador", "Guatemala", "Honduras"],
             ruta_es: ["Frontera EEUU-México"],
@@ -240,7 +240,7 @@ const chapters = {
     // ── 22. Zoom frontera EEUU ──
     'frontera-eeuu': {
         center: [-100, 28], zoom: 5,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: {
             country_clean: ["Mexico"],
             ruta_es: ["Frontera EEUU-México"]
@@ -262,7 +262,7 @@ const chapters = {
     // ── 23. Cuerno de África ──
     'cuerno-africa': {
         center: [42, 3], zoom: 3,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: {
             country_clean: ["Ethiopia", "Somalia"],
             ruta_es: ["Ruta Oriental desde el Cuerno de África", "Ruta al África Austral"]
@@ -272,7 +272,7 @@ const chapters = {
     // ── 24. Zoom Irán ──
     'ruta-iran': {
         center: [55, 33], zoom: 4.5,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: {
             country_clean: ["Afghanistan"],
             ruta_es: ["Afganistán a Irán"]
@@ -282,7 +282,7 @@ const chapters = {
     // ── 25. Zoom Myanmar ──
     'myanmar': {
         center: [93, 18], zoom: 4,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: {
             country_clean: ["Myanmar"],
             ruta_es: ["Bahía de Bengala/Mar de Andamán", "Cruce del río Naf"]
@@ -292,35 +292,35 @@ const chapters = {
     // ── 26. Solución — intro (zoom global) ──
     'solucion-intro': {
         center: [1, 30], zoom: 2,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: null
     },
 
     // ── 27. Zoom Centroeuropa — Ucrania ──
     'ucrania': {
         center: [25, 49], zoom: 4.5,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: null
     },
 
     // ── 28. Zoom mundial — cierre Avallone ──
     'global-cierre': {
         center: [1, 30], zoom: 2,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: null
     },
 
     // ── 29. Global final — Ayuda en Acción ──
     'global-final': {
         center: [1, 30], zoom: 2,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: null
     },
 
     // ── 30. Fin — botón descarga ──
     'fin': {
         center: [1, 30], zoom: 2,
-        layers: { heatmap: true, rutas: true },
+        layers: { rutas: true },
         filtroNuevo: null
     }
 };
@@ -675,8 +675,6 @@ function initScrollytelling(map) {
 
                 // Visibilidad de capas
                 if (chapter.layers) {
-                    map.setLayoutProperty('heatmap-layer', 'visibility',
-                        chapter.layers.heatmap ? 'visible' : 'none');
                     map.setLayoutProperty('rutas-layer', 'visibility',
                         chapter.layers.rutas ? 'visible' : 'none');
                     map.setLayoutProperty('rutas-puntas-layer', 'visibility',
