@@ -11,6 +11,36 @@ async function initMap() {
     );
     const style = await styleResp.json();
 
+     // Inyectar relieve Esri
+    style.sources['esri-relief'] = {
+        type: 'raster',
+        tiles: [
+            'https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}'
+        ],
+        tileSize: 256,
+        attribution: '&copy; Esri'
+    };
+
+    const firstLabelIdx = style.layers.findIndex(
+        l => l.type === 'symbol' && l.layout?.['text-field']
+    );
+
+    const relieveLayer = {
+        id: 'relieve',
+        type: 'raster',
+        source: 'esri-relief',
+        paint: {
+            'raster-opacity': 0.6,
+            'raster-brightness-max': 0.9
+        }
+    };
+
+    if (firstLabelIdx !== -1) {
+        style.layers.splice(firstLabelIdx, 0, relieveLayer);
+    } else {
+        style.layers.push(relieveLayer);
+    }
+
     // Etiquetas en español
     style.layers.forEach(layer => {
         if (layer.type === 'symbol' && layer.layout?.['text-field']) {
@@ -331,10 +361,14 @@ const chapters = {
 // ================================================================
 async function onMapReady(map) {
 
+    const heatmapUrl = isMobile
+        ? 'datos/heatmap-puntos.webp'
+        : 'datos/heatmap-puntos-ordenador.webp';
+
     // ── Heatmap ráster — visible desde el inicio ──
     map.addSource('heatmap-raster', {
         type: 'image',
-        url: 'datos/heatmap-puntos.webp',
+        url: heatmapUrl,
         coordinates: [
             [-142.9954132161899, 74.43653430020457],
             [133.0917680580626, 74.43653430020457],
