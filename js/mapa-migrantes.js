@@ -241,7 +241,7 @@ const chapters = {
             {
                 country_clean: ["Ecuador"],
                 ruta_es: ["Frontera EEUU-México"],
-                ratioFinal: 0.25
+                ratioFinal: 0.2
             }
         ]
     },
@@ -259,7 +259,7 @@ const chapters = {
             {
                 country_clean: ["Ecuador"],
                 ruta_es: ["Frontera EEUU-México"],
-                ratioFinal: 0.7
+                ratioFinal: 0.8
             }
         ]
     },
@@ -351,6 +351,7 @@ const chapters = {
         filtroNuevo: null
     }
 };
+
 
 
 // ================================================================
