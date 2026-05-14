@@ -485,7 +485,6 @@ function crearIconoFlecha(map) {
 // ================================================================
 // 5. CONTADOR ANIMADO
 // ================================================================
-const TARGET_COUNT = 41400;
 const COUNTER_DURATION = 4000;
 let introAnimated = false;
 
@@ -493,13 +492,6 @@ function startCounterAnimation(map) {
     if (introAnimated) return;
     introAnimated = true;
 
-    const counterEl = document.getElementById('death-counter');
-    if (!counterEl) return;
-
-    // Mostrar valor final directamente
-    counterEl.textContent = TARGET_COUNT.toLocaleString('es-ES');
-
-    // Animar solo la opacidad del heatmap
     const duration = 2000;
     const startTime = performance.now();
 
