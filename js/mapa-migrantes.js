@@ -334,7 +334,7 @@ async function onMapReady(map) {
     // ── Heatmap ráster — visible desde el inicio ──
     map.addSource('heatmap-raster', {
         type: 'image',
-        url: 'datos/heatmap-puntos.png',
+        url: 'datos/heatmap-puntos.webp',
         coordinates: [
             [-142.9954132161899, 74.43653430020457],
             [133.0917680580626, 74.43653430020457],
