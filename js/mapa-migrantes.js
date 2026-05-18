@@ -694,6 +694,12 @@ function initScrollytelling(map) {
                 activeStep = stepId;
                 activeStepEl = entry.target;
 
+                // Mostrar disclaimer en la slide final
+                const disclaimer = document.getElementById('disclaimer');
+                if (disclaimer) {
+                    disclaimer.classList.toggle('visible', stepId === 'fin');
+                }
+
                 const chapter = chapters[stepId];
                 if (!chapter) return;
 
