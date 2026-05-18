@@ -180,3 +180,23 @@ a.btn-descarga {
         padding: 14px 28px;
     }
 }
+
+
+
+.disclaimer {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    max-width: 380px;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: #000000;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.disclaimer.visible {
+    opacity: 1;
+}
