@@ -89,6 +89,11 @@ body {
     color: #ffffff;
 }
 
+.step-content p i {
+    font-size: 1rem;
+    color: #aaaaaa;
+}
+
 .step-content a,
 .intro-content a {
     color: #01f3b3;
