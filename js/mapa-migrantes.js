@@ -3,6 +3,7 @@
 // ================================================================
 
 const isMobile = window.innerWidth < 768;
+const zoomOffset = isMobile ? -0.7 : 0;
 
 async function initMap() {
 
@@ -706,7 +707,7 @@ function initScrollytelling(map) {
                 // Mover el mapa — más rápido en móvil
                 map.flyTo({
                     center: chapter.center,
-                    zoom: chapter.zoom,
+                    zoom: chapter.zoom + zoomOffset,
                     pitch: chapter.pitch || 0,
                     bearing: chapter.bearing || 0,
                     duration: isMobile ? 800 : 2000,
