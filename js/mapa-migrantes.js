@@ -125,7 +125,7 @@ const chapters = {
         center: [-14, 27], zoom: 4.5,
         layers: { rutas: true },
         filtroNuevo: {
-            country_clean: ["Senegal", "Morocco"],
+            country_clean: ["Senegal", "Morocco", "Guinea", "Mali"],
             ruta_es: ["Ruta Atlántica a Canarias"]
         }
     },
@@ -156,7 +156,7 @@ const chapters = {
         center: [15, 18], zoom: 4,
         layers: { rutas: true },
         filtroNuevo: {
-            country_clean: ["Niger", "Nigeria", "Sudan"],
+            country_clean: ["Niger", "Sudan"],
             ruta_es: ["Cruce del Sáhara"]
         }
     },
@@ -181,7 +181,9 @@ const chapters = {
         layers: { rutas: true },
         filtroNuevo: {
             country_clean: ["Eritrea", "Sudan", "Egypt", "Ivory Coast",
-                            "Tunisia", "Syria", "Pakistan", "Bangladesh"],
+                            "Tunisia", "Syria", "Pakistan", "Bangladesh",
+                            "Guinea", "Nigeria", "Ethiopia", "Somalia",
+                            "Morocco", "Mali", "The Gambia"],
             ruta_es: ["Mediterráneo Central"]
         }
     },
@@ -219,14 +221,14 @@ const chapters = {
 
     // ── 18. Zoom Centroamérica ──
     'centroamerica': {
-        center: [-82, 10], zoom: 5,
+        center: [-82, 10], zoom: 4,
         layers: { rutas: true },
         filtroNuevo: null
     },
 
     // ── 19. Zoom América general — políticas ──
     'america-politicas': {
-        center: [-90, 18], zoom: 4,
+        center: [-90, 18], zoom: 3,
         layers: { rutas: true },
         filtroNuevo: null
     },
@@ -236,18 +238,15 @@ const chapters = {
         center: [-77, 7], zoom: 6,
         layers: { rutas: true },
         filtroNuevo: null,
-        continuar: [
-            {
-                country_clean: ["Venezuela"],
-                ruta_es: ["Darién"],
-                ratioFinal: 1.0
-            },
-            {
-                country_clean: ["Ecuador"],
-                ruta_es: ["Frontera EEUU-México"],
-                ratioFinal: 0.2
-            }
-        ]
+    },
+
+    // ── 20.1. Zoom Darién ──
+    'caribe': {
+        center: [-80, 18], zoom: 4,
+        layers: { rutas: true },
+        filtroNuevo: 
+            {country_clean: ["Cuba", "Dominican Republic", "Venezuela"],
+            ruta_es: ["Rep. Dominicana a Puerto Rico", "Caribe a EEUU", "Venezuela al Caribe"]}
     },
 
     // ── 21. Centroamérica — flechas sin texto ──
@@ -255,17 +254,10 @@ const chapters = {
         center: [-88, 14], zoom: 5,
         layers: { rutas: true },
         filtroNuevo: {
-            country_clean: ["El Salvador", "Guatemala", "Honduras"],
+            country_clean: ["Guatemala", "Honduras"],
             ruta_es: ["Frontera EEUU-México"],
             ratioFinal: 0.55
-        },
-        continuar: [
-            {
-                country_clean: ["Ecuador"],
-                ruta_es: ["Frontera EEUU-México"],
-                ratioFinal: 0.8
-            }
-        ]
+        }
     },
 
     // ── 22. Zoom frontera EEUU ──
@@ -278,12 +270,7 @@ const chapters = {
         },
         continuar: [
             {
-                country_clean: ["El Salvador", "Guatemala", "Honduras"],
-                ruta_es: ["Frontera EEUU-México"],
-                ratioFinal: 1.0
-            },
-            {
-                country_clean: ["Ecuador"],
+                country_clean: ["Guatemala", "Honduras"],
                 ruta_es: ["Frontera EEUU-México"],
                 ratioFinal: 1.0
             }
@@ -315,8 +302,8 @@ const chapters = {
         center: [93, 18], zoom: 4,
         layers: { rutas: true },
         filtroNuevo: {
-            country_clean: ["Myanmar"],
-            ruta_es: ["Bahía de Bengala/Mar de Andamán", "Cruce del río Naf"]
+            country_clean: ["Myanmar", "Comoros"],
+            ruta_es: ["Bahía de Bengala/Mar de Andamán", "Cruce del río Naf", "Travesías marítimas a Mayotte"]
         }
     },
 
@@ -422,15 +409,15 @@ async function onMapReady(map) {
             'interpolate', ['linear'], ['zoom'],
             2, [
                 'step', ['get', 'fallecidos'],
-                1.5, 172.83, 2, 333.88, 2.6, 904, 3, 1671.5, 3.2
+                1.5, 250, 2, 500, 2.6, 1000, 3, 2000, 3.2
             ],
             5, [
                 'step', ['get', 'fallecidos'],
-                3, 172.83, 4, 333.88, 5.2, 904, 6, 1671.5, 6.4
+                3, 250, 4, 500, 5.2, 1000, 6, 2000, 6.4
             ],
             8, [
                 'step', ['get', 'fallecidos'],
-                5, 172.83, 7, 333.88, 9, 904, 10.5, 1671.5, 11
+                5, 250, 7, 500, 9, 1000, 10.5, 2000, 11
             ]
         ];
 
@@ -462,7 +449,7 @@ async function onMapReady(map) {
             'icon-image': 'arrow',
             'icon-size': [
                 'step', ['get', 'fallecidos'],
-                0.35, 172.83, 0.5, 333.88, 0.65, 904, 0.8, 1671.5, 0.95
+                0.35, 250, 0.5, 500, 0.65, 1000, 0.8, 2000, 0.95
             ],
             'icon-rotate': ['get', 'bearing'],
             'icon-rotation-alignment': 'map',
