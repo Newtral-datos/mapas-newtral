@@ -1,5 +1,14 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
 body {
     font-family: 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
     background: #0a0a0a;
