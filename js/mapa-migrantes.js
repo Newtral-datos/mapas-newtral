@@ -4,6 +4,8 @@
 
 const isMobile = window.innerWidth < 768;
 const zoomOffset = isMobile ? -0.7 : 0;
+const lngOffset = isMobile ? -5 : 0;
+
 
 async function initMap() {
 
@@ -112,7 +114,8 @@ const chapters = {
 
     // ── 5. Med Occidental + flechas Argelia/Marruecos ──
     'med-occidental': {
-        center: [-2, 35], zoom: 5,
+        center: [-7, 35], zoom: 5,
+        lngOffsetMobile: 5,
         layers: { rutas: true },
         filtroNuevo: {
             country_clean: ["Morocco", "Algeria"],
@@ -122,7 +125,7 @@ const chapters = {
 
     // ── 6. Canarias — flechas Senegal etc. ──
     'canarias': {
-        center: [-14, 27], zoom: 4.5,
+        center: [-4, 27], zoom: 4,
         layers: { rutas: true },
         filtroNuevo: {
             country_clean: ["Senegal", "Morocco", "Guinea", "Mali"],
@@ -146,14 +149,16 @@ const chapters = {
 
     // ── 9. Zoom centro África — intro Sahara ──
     'sahara-intro': {
-        center: [15, 18], zoom: 4,
+        center: [10, 18], zoom: 4,
+        lngOffsetMobile: 8,
         layers: { rutas: true },
         filtroNuevo: null
     },
 
     // ── 10. Flechas Sahara ──
     'sahara-flechas': {
-        center: [15, 18], zoom: 4,
+        center: [10, 18], zoom: 4,
+        lngOffsetMobile: 8,
         layers: { rutas: true },
         filtroNuevo: {
             country_clean: ["Niger", "Sudan"],
@@ -163,21 +168,24 @@ const chapters = {
 
     // ── 11. Sahara — desapariciones (mismo zoom) ──
     'sahara-desapariciones': {
-        center: [15, 18], zoom: 4,
+        center: [10, 18], zoom: 4,
+        lngOffsetMobile: 8,
         layers: { rutas: true },
         filtroNuevo: null
     },
 
     // ── 12. Sahara — cita Avallone (mismo zoom) ──
     'sahara-cita': {
-        center: [15, 18], zoom: 4,
+        center: [10, 18], zoom: 4,
+        lngOffsetMobile: 8,
         layers: { rutas: true },
         filtroNuevo: null
     },
 
     // ── 13. Zoom Med Central ──
     'med-central': {
-        center: [15, 34], zoom: 4.5,
+        center: [9, 32], zoom: 4.2,
+        lngOffsetMobile: 7,
         layers: { rutas: true },
         filtroNuevo: {
             country_clean: ["Eritrea", "Sudan", "Egypt", "Ivory Coast",
@@ -190,7 +198,8 @@ const chapters = {
 
     // ── 14. Zoom Turquía ──
     'turquia': {
-        center: [30, 39], zoom: 5,
+        center: [27, 39], zoom: 4.5,
+        lngOffsetMobile: 8,
         layers: { rutas: true },
         filtroNuevo: {
             country_clean: ["Syria", "Iraq", "Afghanistan"],
@@ -200,7 +209,8 @@ const chapters = {
 
     // ── 15. Turquía — cita (mismo zoom) ──
     'turquia-cita': {
-        center: [30, 39], zoom: 5,
+        center: [27, 39], zoom: 4.5,
+        lngOffsetMobile: 8,
         layers: { rutas: true },
         filtroNuevo: null
     },
@@ -235,7 +245,8 @@ const chapters = {
 
     // ── 20. Zoom Darién ──
     'darien': {
-        center: [-77, 7], zoom: 6,
+        center: [-80, 7], zoom: 6,
+        lngOffsetMobile: 1.2,
         layers: { rutas: true },
         filtroNuevo: null,
     },
@@ -243,6 +254,7 @@ const chapters = {
     // ── 20.1. Zoom Darién ──
     'caribe': {
         center: [-80, 18], zoom: 4,
+        lngOffsetMobile: 8,
         layers: { rutas: true },
         filtroNuevo: 
             {country_clean: ["Cuba", "Dominican Republic", "Venezuela"],
@@ -262,7 +274,8 @@ const chapters = {
 
     // ── 22. Zoom frontera EEUU ──
     'frontera-eeuu': {
-        center: [-100, 28], zoom: 5,
+        center: [-98, 28], zoom: 4.4,
+        lngOffsetMobile: -9,
         layers: { rutas: true },
         filtroNuevo: {
             country_clean: ["Mexico"],
@@ -290,6 +303,7 @@ const chapters = {
     // ── 24. Zoom Irán ──
     'ruta-iran': {
         center: [55, 33], zoom: 4.5,
+        lngOffsetMobile: 5,
         layers: { rutas: true },
         filtroNuevo: {
             country_clean: ["Afghanistan"],
@@ -300,6 +314,7 @@ const chapters = {
     // ── 25. Zoom Myanmar ──
     'myanmar': {
         center: [93, 18], zoom: 4,
+        lngOffsetMobile: 4,
         layers: { rutas: true },
         filtroNuevo: {
             country_clean: ["Myanmar", "Comoros"],
@@ -317,6 +332,7 @@ const chapters = {
     // ── 27. Zoom Centroeuropa — Ucrania ──
     'ucrania': {
         center: [25, 49], zoom: 4.5,
+        lngOffsetMobile: 2,
         layers: { rutas: true },
         filtroNuevo: null
     },
@@ -691,9 +707,11 @@ function initScrollytelling(map) {
                 const chapter = chapters[stepId];
                 if (!chapter) return;
 
+                const lngAdj = isMobile ? (chapter.lngOffsetMobile !== undefined ? chapter.lngOffsetMobile : lngOffset) : 0;
+
                 // Mover el mapa — más rápido en móvil
                 map.flyTo({
-                    center: chapter.center,
+                    center: [chapter.center[0] + lngAdj, chapter.center[1]],
                     zoom: chapter.zoom + zoomOffset,
                     pitch: chapter.pitch || 0,
                     bearing: chapter.bearing || 0,
