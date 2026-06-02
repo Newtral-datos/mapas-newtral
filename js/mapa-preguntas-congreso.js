@@ -1,5 +1,5 @@
 // ================================================================
-//  Mapa de preguntas parlamentarias - CORREGIDO
+//  Mapa de preguntas parlamentarias
 // ================================================================
 
 let map, isCanariasView = false;
