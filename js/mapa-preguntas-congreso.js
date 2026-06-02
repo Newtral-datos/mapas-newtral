@@ -243,29 +243,28 @@ let diputadosIndex = [];
 function buildIndices() {
   if (!puntosGeoJSON) return;
 
-  fetch(CONFIG.geojsonMunis)
+  // Cargar el índice ligero en vez del GeoJSON pesado
+  fetch('datos/municipios_indice.json')
     .then(r => r.json())
-    .then(geojson => {
-      municipiosIndex = geojson.features.map(f => ({
-        name: f.properties[CONFIG.fields.municipio] || '',
-        nPreguntas: f.properties[CONFIG.fields.nPreguntas] || 0,
-        center: turf.center(f).geometry.coordinates
-      }));
+    .then(indice => {
+      municipiosIndex = indice;
 
+      // Diputados (sin cambios)
       const setDip = new Set();
       puntosGeoJSON.features.forEach(f => {
         const autores = f.properties[CONFIG.fields.autores];
         if (!autores) return;
         autores.split(',').forEach(a => {
           const name = a.trim();
-          if (name && name !== '(…)') setDip.add(name);
+          if (name) setDip.add(name);
         });
       });
       diputadosIndex = [...setDip].sort();
 
       setupSearchMunicipios();
       setupSearchDiputados();
-    });
+    })
+    .catch(err => console.error('Error cargando índice:', err));
 }
 
 function setupSearchMunicipios() {
