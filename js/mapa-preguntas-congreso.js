@@ -591,5 +591,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const modal = document.getElementById('info-modal');
       modal.style.display = 'flex';
     });
+
+    map.addControl(
+      new maplibregl.ScaleControl({
+        maxWidth: 120,       // anchura máxima en px de la barra
+        unit: 'metric'       // 'metric' (km/m) o 'imperial' (mi/ft)
+      }),
+      'bottom-right'
+    );
   });
 });
