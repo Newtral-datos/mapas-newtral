@@ -533,46 +533,46 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('btn-azar').addEventListener('click', () => {
-  const layers = [];
-  if (activeTipo === 'municipio' || activeTipo === 'ambos') layers.push('capa-municipios');
-  if (activeTipo === 'lugar' || activeTipo === 'ambos') layers.push('capa-puntos');
-
-  const features = map.queryRenderedFeatures({ layers });
-  if (!features.length) return;
-
-  const f = features[Math.floor(Math.random() * features.length)];
-  const center = f.geometry.type === 'Point'
-    ? f.geometry.coordinates
-    : turf.center(f).geometry.coordinates;
-  const lngLat = new maplibregl.LngLat(center[0], center[1]);
-
-  map.flyTo({ center, zoom: 11 });
-
-  map.once('moveend', () => {
-    if (f.layer.id === 'capa-puntos') {
-      const point = map.project(center);
-      const hits = map.queryRenderedFeatures(point, { layers: ['capa-puntos'] });
-      popupData = filtrarPreguntas(hits.map(h => h.properties));
-      if (!popupData.length) return;
-      popupIndex = 0;
-      activePopup.setLngLat(lngLat)
-        .setHTML(buildPopupHTML(popupData, 0))
-        .addTo(map);
-
-    } else if (f.layer.id === 'capa-municipios') {
-      const muniName = (f.properties[CONFIG.fields.municipio] || '').trim();
-      if (!puntosGeoJSON) return;
-      const preguntas = puntosGeoJSON.features
-        .filter(ft => (ft.properties[CONFIG.fields.muniPadre] || '').trim() === muniName)
-        .map(ft => ft.properties);
-      popupData = filtrarPreguntas(preguntas);
-      popupIndex = 0;
-      activePopup.setLngLat(lngLat)
-        .setHTML(popupData.length > 0 ? buildPopupHTML(popupData, 0) : buildEmptyPopupHTML())
-        .addTo(map);
-    }
-  });
-});
+      const layers = [];
+      if (activeTipo === 'municipio' || activeTipo === 'ambos') layers.push('capa-municipios');
+      if (activeTipo === 'lugar' || activeTipo === 'ambos') layers.push('capa-puntos');
+    
+      const features = map.queryRenderedFeatures({ layers });
+      if (!features.length) return;
+    
+      const f = features[Math.floor(Math.random() * features.length)];
+      const center = f.geometry.type === 'Point'
+        ? f.geometry.coordinates
+        : turf.center(f).geometry.coordinates;
+      const lngLat = new maplibregl.LngLat(center[0], center[1]);
+    
+      map.flyTo({ center, zoom: 11 });
+    
+      map.once('moveend', () => {
+        if (f.layer.id === 'capa-puntos') {
+          const point = map.project(center);
+          const hits = map.queryRenderedFeatures(point, { layers: ['capa-puntos'] });
+          popupData = filtrarPreguntas(hits.map(h => h.properties));
+          if (!popupData.length) return;
+          popupIndex = 0;
+          activePopup.setLngLat(lngLat)
+            .setHTML(buildPopupHTML(popupData, 0))
+            .addTo(map);
+    
+        } else if (f.layer.id === 'capa-municipios') {
+          const muniName = (f.properties[CONFIG.fields.municipio] || '').trim();
+          if (!puntosGeoJSON) return;
+          const preguntas = puntosGeoJSON.features
+            .filter(ft => (ft.properties[CONFIG.fields.muniPadre] || '').trim() === muniName)
+            .map(ft => ft.properties);
+          popupData = filtrarPreguntas(preguntas);
+          popupIndex = 0;
+          activePopup.setLngLat(lngLat)
+            .setHTML(popupData.length > 0 ? buildPopupHTML(popupData, 0) : buildEmptyPopupHTML())
+            .addTo(map);
+        }
+      });
+    });
 
     // Interfaz panel
     document.getElementById('btn-close-panel').addEventListener('click', () => {
