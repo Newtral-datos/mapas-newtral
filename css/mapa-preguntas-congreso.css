@@ -154,7 +154,7 @@ body, html { height: 100%; font-family: 'DM Sans', sans-serif; color: var(--text
 #panel-footer { padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; }
 #btn-close-panel {
   background: none; border: none; font-family: 'DM Sans', sans-serif;
-  font-size: 0.73rem; color: var(--muted); cursor: pointer;
+  font-size: 0.83rem; color: var(--muted); cursor: pointer;
 }
 #btn-close-panel:hover { color: var(--text); }
 #btn-info {
