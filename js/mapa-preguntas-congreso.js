@@ -22,7 +22,7 @@ let drawerPreguntas = [];
 let drawerPreguntasBase = [];
 const DRAWER_THRESHOLD = 3;
 
-const USE_PMTILES    = true;
+const USE_PMTILES    = false;
 const HOVER_MIN_ZOOM = 7;
 
 const CONFIG = {
@@ -297,7 +297,7 @@ function buildResumenPopupHTML(muniName, total) {
       <div class="popup-resumen-text">Los diputados han hecho</div>
       <div class="popup-resumen-n">${total} preguntas</div>
       <div class="popup-resumen-muni">sobre ${muniName}.</div>
-      <button class="popup-resumen-btn" onclick="abrirDrawer('${muniName.replace(/'/g, "\\'")}')">Click aquí para verlas</button>
+      <button class="popup-resumen-btn" onclick="event.stopPropagation(); abrirDrawer('${muniName.replace(/'/g, "\\'")}')">Click aquí para verlas</button>
     </div>`;
 }
 
@@ -681,7 +681,10 @@ document.addEventListener('DOMContentLoaded', () => {
     //  HOVER — municipios
     // ============================================================
 
+    const esTactil = window.matchMedia('(hover: none)').matches;
+
     map.on('mousemove', 'capa-municipios', (e) => {
+      if (esTactil) return;
       if (!e.features.length) return;
       if (map.getZoom() < HOVER_MIN_ZOOM) return;
       if (clickPopup.isOpen()) return;
@@ -758,6 +761,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ============================================================
 
     map.on('mousemove', 'capa-puntos', (e) => {
+      if (esTactil) return;
       if (map.getZoom() < HOVER_MIN_ZOOM) return;
       if (clickPopup.isOpen()) return;
       map.getCanvas().style.cursor = 'pointer';
