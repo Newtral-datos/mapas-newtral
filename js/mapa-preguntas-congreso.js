@@ -22,7 +22,7 @@ let drawerPreguntas = [];
 let drawerPreguntasBase = [];
 const DRAWER_THRESHOLD = 3;
 
-const USE_PMTILES    = false;
+const USE_PMTILES    = true;
 const HOVER_MIN_ZOOM = 7;
 
 const CONFIG = {
