@@ -373,6 +373,26 @@ body, html { height: 100%; font-family: 'DM Sans', sans-serif; color: var(--text
   font-family: 'DM Sans', sans-serif; font-size: 0.7rem;
   background: rgba(255,255,255,0.85); border-color: var(--muted); color: var(--text);
 }
+
+/* Botón busqueda de filtros en el móvil */
+#btn-apply-mobile {
+  display: none; /* oculto en escritorio */
+  width: 100%;
+  padding: 14px;
+  margin: 6px 0 18px;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  position: sticky;   /* truco clave: ver nota abajo */
+  bottom: 10px;
+}
+#btn-apply-mobile:hover { background: #00c28e; }
+
 /* ---- RESPONSIVE ---- */
 @media (max-width: 700px) {
   :root { --panel-min: 100vw; --panel-max: 100vw; --panel-width: 100vw; --drawer-width: 100vw; }
@@ -383,4 +403,5 @@ body, html { height: 100%; font-family: 'DM Sans', sans-serif; color: var(--text
   #panel.closed { margin-left: -100vw; }
   #leyenda { top: auto; bottom: 10px; left: 10px; font-size: 0.65rem; max-width: 240px; }
   #drawer { width: 100vm; left: auto; right: 0; max-width: 100vw; overflow-x: hidden;}
+  #btn-apply-mobile { display: block; }
 }
