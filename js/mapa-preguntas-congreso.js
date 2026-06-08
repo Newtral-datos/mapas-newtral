@@ -900,6 +900,10 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => map.resize(), 400);
     });
 
+    document.getElementById('btn-apply-mobile').addEventListener('click', () => {
+      document.getElementById('btn-close-panel').click();
+    });
+
     document.getElementById('btn-open-trigger').addEventListener('click', () => {
       document.getElementById('panel').classList.remove('closed');
       document.getElementById('btn-open-panel').classList.remove('visible');
