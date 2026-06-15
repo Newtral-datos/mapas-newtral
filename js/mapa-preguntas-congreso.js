@@ -36,7 +36,7 @@ const CONFIG = {
   searchZoom: 10.5,
 
   fields: {
-    municipio:  'municipio',
+    municipio:  'nombre_mun',
     lugar:      'lugar',
     pregunta:   'pregunta',
     partido:    'partido',
