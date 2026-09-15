@@ -593,11 +593,12 @@ document.addEventListener('DOMContentLoaded', () => {
       version: 8,
       sources: {
         'carto-light': {
-          type: 'raster',
-          tiles: ['https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png'],
-          tileSize: 256, attribution: '© CARTO'
-        }
-      },
+         type: 'raster',
+         tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'],
+         tileSize: 256,
+         attribution: '© Esri, HERE, Garmin, FAO, NOAA, USGS'
+      }
+    },
       layers: [{ id: 'base', type: 'raster', source: 'carto-light' }]
     },
     center: CONFIG.views.peninsula.center,
